@@ -8,6 +8,15 @@ from rest_framework import status
 
 from .serializers import UserRegisterSerializer
 
+
+from rest_framework_simplejwt.views import TokenObtainPairView
+
+from .serializers import CustomTokenObtainPairSerializer
+
+from rest_framework_simplejwt.tokens import RefreshToken
+
+
+
 # Create your views here.
 
 
@@ -28,6 +37,32 @@ class UserRegisterAPIView(APIView):
 
             return Response(response_data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
+
+
+
+class CustomTokenObtainPairView(TokenObtainPairView):
+    serializer_class = CustomTokenObtainPairSerializer
+
+        
+
+
+
+
+class Logout(APIView):
+    def post(self, request):
+        
+        print("request///////////////////////////", request.data['refresh_token'])
+
+        try:
+            refresh_token =  request.data['refresh_token']
+            
+            token = RefreshToken(refresh_token)
+            print("token.../////\\\\\\", token.blacklist())
+            token.blacklist()
+            print("token.../////\\\\\\", token)
+            return Response({"logout":"Log out successfully!!"})
+        except Exception as e:
+            return Response({"error":"Error occurs while log out!!"})           
 
 
 

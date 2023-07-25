@@ -28,4 +28,4 @@ class ProductViewset(viewsets.ModelViewSet):
 class OrderViewset(viewsets.ModelViewSet):
     authentication_classes= [JWTAuthentication]
     queryset = Order.objects.all()
-    serializer_class = OrderSerializer        
+    serializer_class = OrderSerializer     
