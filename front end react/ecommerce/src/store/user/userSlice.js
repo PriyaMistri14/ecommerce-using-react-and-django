@@ -12,12 +12,20 @@ export const setCurrentUser = createAsyncThunk('/user', async(payload)=>{
 
 
 
+export const checkIsAdmin = createAsyncThunk('/admin', async(payload)=>{
+    const res = await axiosPOST('mysite/isSuperUser/', payload)
+    return res.data.data
+})
+
+
+
 export const userSlice= createSlice({
     name:'user',
     initialState:{
         currentUser : null,
         isLoading:false,
-        error: null
+        error: null,
+        isAdmin: false
     },
     reducers:{
         removeCurrentUser: (state, action)=>{
@@ -39,6 +47,10 @@ export const userSlice= createSlice({
         .addCase(setCurrentUser.rejected, (state, action)=>{
             state.isLoading = false
             state.error = action.error.code
+        })
+
+        .addCase(checkIsAdmin.fulfilled, (state, action)=>{
+            state.isAdmin = action.payload
         })
     }
 

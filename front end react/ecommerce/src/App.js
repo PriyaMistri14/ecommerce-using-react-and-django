@@ -19,6 +19,7 @@ import { useNavigate } from 'react-router-dom';
 import { removeCurrentUser } from './store/user/userSlice';
 
 import { useDispatch } from 'react-redux';
+import SelectUserOrAdmin from './components/selectUserOrAdmin/selectUserOrAdmin.component';
 
 
 
@@ -27,8 +28,8 @@ import { useDispatch } from 'react-redux';
 
 
 function App() {
-  const data = useSelector(state => state.user.currentUser)
-  console.log("Current USERRRRR : ", data);
+  const currentUser = useSelector(state => state.user.currentUser)
+  console.log("Current USERRRRR : ", currentUser);
   const navigate = useNavigate()
 
   const dispatch = useDispatch()
@@ -68,13 +69,9 @@ function App() {
           <Link to='/'>LOGO</Link>
 
 {
-data ? <p onClick={logoutHandler}>Logout</p> :  <Link to='/login'>Login</Link>
+currentUser ? <p onClick={logoutHandler}>Logout</p> :  <Link to='/selectUserOrAdmin'>Login</Link>
 
 }
-
-         
-          
-
         </nav>
 
 
@@ -82,6 +79,7 @@ data ? <p onClick={logoutHandler}>Logout</p> :  <Link to='/login'>Login</Link>
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/selectUserOrAdmin" element={<SelectUserOrAdmin />} />
         </Routes>
 
       </header>

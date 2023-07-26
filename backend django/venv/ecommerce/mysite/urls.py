@@ -1,7 +1,7 @@
 
 from django.urls import path,include
 
-from .views import CategoryViewset, ProductViewset, OrderViewset
+from .views import CategoryViewset, ProductViewset, OrderViewset,  ProductDetailViewset, DiscountViewset, DeliveryViewset, PaymentViewset, CartItemViewset, ReviewViewset, IsSuperUser
 
 from rest_framework import routers
 
@@ -10,11 +10,18 @@ router = routers.DefaultRouter()
 router.register("category", CategoryViewset, basename="category")
 router.register("product", ProductViewset, basename="product")
 router.register("order", OrderViewset, basename="order")
+router.register("productDetail", ProductDetailViewset, basename="productDetail")
+router.register("discount", DiscountViewset, basename="discount")
+router.register("delivery", DeliveryViewset, basename="delivery")
+router.register("payment", PaymentViewset, basename="payment")
+router.register("review", ReviewViewset, basename="review")
+router.register("cartItem", CartItemViewset, basename="cartItem")
 
 
 
 
 
 urlpatterns  =[
-    path("mysite/",include(router.urls))
+    path("mysite/",include(router.urls)), 
+    path("mysite/isSuperUser/", IsSuperUser.as_view(), name='isSuperUser' ) 
 ]
