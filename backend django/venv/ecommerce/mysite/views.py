@@ -31,10 +31,10 @@ class CategoryViewset(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
 
-    def get_permissions(self):
-        if self.request.method in ['PUT', 'DELETE','POST','PATCH']:
-            return [permissions.IsAdminUser()]        
-        return [permissions.IsAuthenticated()]
+    # def get_permissions(self):
+    #     if self.request.method in ['PUT', 'DELETE','POST','PATCH']:
+    #         return [permissions.IsAdminUser()]        
+    #     return [permissions.IsAuthenticated()]
 
 
 class ProductViewset(viewsets.ModelViewSet):
@@ -42,10 +42,10 @@ class ProductViewset(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
 
-    def get_permissions(self):
-        if self.request.method in ['PUT', 'DELETE','POST','PATCH']:
-            return [permissions.IsAdminUser()]        
-        return [permissions.IsAuthenticated()]
+    # def get_permissions(self):
+    #     if self.request.method in ['PUT', 'DELETE','POST','PATCH']:
+    #         return [permissions.IsAdminUser()]        
+    #     return [permissions.IsAuthenticated()]
 
 
 class OrderViewset(viewsets.ModelViewSet):
@@ -60,10 +60,10 @@ class ProductDetailViewset(viewsets.ModelViewSet):
     queryset = ProductDetail.objects.all()
     serializer_class = ProductDetailSerializer
 
-    def get_permissions(self):
-        if self.request.method in ['PUT', 'DELETE','POST','PATCH']:
-            return [permissions.IsAdminUser()]        
-        return [permissions.IsAuthenticated()]
+    # def get_permissions(self):
+    #     if self.request.method in ['PUT', 'DELETE','POST','PATCH']:
+    #         return [permissions.IsAdminUser()]        
+    #     return [permissions.IsAuthenticated()]
 
 
 
@@ -79,10 +79,10 @@ class DiscountViewset(viewsets.ModelViewSet):
     queryset = Discount.objects.all()
     serializer_class = DiscountSerializer 
 
-    def get_permissions(self):
-        if self.request.method in ['PUT', 'DELETE','POST','PATCH']:
-            return [permissions.IsAdminUser()]        
-        return [permissions.IsAuthenticated()]   
+    # def get_permissions(self):
+    #     if self.request.method in ['PUT', 'DELETE','POST','PATCH']:
+    #         return [permissions.IsAdminUser()]        
+    #     return [permissions.IsAuthenticated()]   
 
 
 class DeliveryViewset(viewsets.ModelViewSet):

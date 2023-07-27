@@ -20,7 +20,12 @@ import { removeCurrentUser } from './store/user/userSlice';
 
 import { useDispatch } from 'react-redux';
 import SelectUserOrAdmin from './components/selectUserOrAdmin/selectUserOrAdmin.component';
+import Category from './components/category/category.component';
 
+
+
+import Shop from './components/shop/shop.component';
+import ProductDetail from './components/product-detail/product-detail.component';
 
 
 
@@ -55,7 +60,7 @@ function App() {
     axiosIntance.defaults.headers["Authorization"] = null
     localStorage.removeItem("access_token")
     localStorage.removeItem("refresh_token")
-    navigate("/login/")
+    navigate("/selectUserOrAdmin")
 
 
   }
@@ -67,6 +72,7 @@ function App() {
       <header className="App-header">
         <nav className='nav-container'>
           <Link to='/'>LOGO</Link>
+          <Link to='/shop'>Shop Now</Link>
 
 {
 currentUser ? <p onClick={logoutHandler}>Logout</p> :  <Link to='/selectUserOrAdmin'>Login</Link>
@@ -80,6 +86,10 @@ currentUser ? <p onClick={logoutHandler}>Logout</p> :  <Link to='/selectUserOrAd
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/selectUserOrAdmin" element={<SelectUserOrAdmin />} />
+          <Route path="/category" element= {<Category />} />
+          <Route path="/shop" element= {<Shop />} />
+          <Route path='/productDetail' element= {<ProductDetail />} /> 
+          
         </Routes>
 
       </header>

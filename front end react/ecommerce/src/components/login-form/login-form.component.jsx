@@ -45,7 +45,7 @@ const Login = () => {
 
 
     useEffect(() => {
-        currentUser && navigate("/")
+        currentUser && navigate("/category")
     }, [])
 
 
@@ -112,7 +112,7 @@ const Login = () => {
                 localStorage.setItem("access_token", res.payload.access)
                 localStorage.setItem("refresh_token", res.payload.refresh)
                 alert("Successfully Login!!")
-                navigate("/")
+                navigate("/category")
             }
 
             // res.meta.requestStatus === 'rejected'

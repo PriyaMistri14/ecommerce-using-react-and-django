@@ -59,7 +59,7 @@ class Order(models.Model):
 class ProductDetail(models.Model):
     product = models.ForeignKey('Product', on_delete=models.CASCADE, related_name='product_details')
     available_quantity = models.IntegerField()
-    available_size = models.FloatField()
+    available_size = models.CharField(max_length=10)   # XS, S, M, L, XL , XXL , XXXL
     available_color = models.CharField(max_length=20)
     created_at = models.DateTimeField(default=now)              # called only first time obj is created
     updated_at = models.DateTimeField(auto_now = True) 
@@ -68,8 +68,8 @@ class ProductDetail(models.Model):
 
 
 class CartItem(models.Model):
-    customer = models.ForeignKey(User, on_delete=models.CASCADE, related_name='cart_items')
-    product = models.ForeignKey('Product', on_delete=models.CASCADE, related_name='cart_items')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='cart_items')
+    product_detail = models.ForeignKey('ProductDetail', on_delete=models.CASCADE, related_name='cart_items', default="")
     quantity = models.IntegerField()
     created_at = models.DateTimeField(default=now)              # called only first time obj is created
     updated_at = models.DateTimeField(auto_now = True) 
@@ -89,7 +89,7 @@ class Discount(models.Model):
 
 
 class Review(models.Model):
-    customer = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reviews')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reviews')
     product = models.ForeignKey('Product', on_delete=models.CASCADE, related_name='reviews')
     rating = models.IntegerField()
     description = models.CharField(max_length=100)

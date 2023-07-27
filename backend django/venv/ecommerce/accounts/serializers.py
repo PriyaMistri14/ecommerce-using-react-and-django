@@ -43,8 +43,8 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):
         data = super(CustomTokenObtainPairSerializer, self).validate(attrs)
-        print("USERRRRRR : ................", self.user)
-        data.update({'username':self.user.username})
+        print("USERRRRRR : ................", self.user.id)
+        data.update({'username':self.user.username, 'userId':self.user.id})
         return data
 
 

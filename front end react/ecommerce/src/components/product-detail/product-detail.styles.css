@@ -1,0 +1,34 @@
+.product-detail-container{
+    background-color: aqua;
+    border: 1px solid black;
+    margin: 25px;
+   
+}
+
+.product-detail-container img{
+    margin-top: 10px;
+    width: 55px;
+    height: 55px;
+    
+}
+
+.product-detail-container:hover{
+    background-color: bisque;
+}
+
+
+
+.add-to-cart:hover{
+
+    background-color: lightcoral;
+}
+
+.add-to-cart{
+    margin-left: 550px;
+    border-radius: 3px;
+    width: 100px;
+    background-color: white;
+    padding: 5px;
+    
+}
+
