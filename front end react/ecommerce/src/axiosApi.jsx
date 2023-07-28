@@ -47,11 +47,19 @@ export const axiosDELETE = async (url) =>{
 
 export const axiosPUT = async (url, payload)=>{
     const res = await axiosIntance.put(baseUrl +url, payload)
-    console.log("URL:  ", url, "whole url :  ", baseUrl+url, "resss:  ", res, "Payload: ", payload, "in post");
+    console.log("URL:  ", url, "whole url :  ", baseUrl+url, "resss:  ", res, "Payload: ", payload, "in put");
     return res
 
 }
 
+
+
+
+export const axiosPATCH = async (url, payload) =>{
+    const res = await axiosIntance.patch(baseUrl + url, payload)
+    console.log("URL:  ", url, "whole url :  ", baseUrl+url, "resss:  ", res, "Payload: ", payload, "in patch");
+    return res
+}
 
 
 

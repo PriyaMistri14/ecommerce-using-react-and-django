@@ -4,7 +4,7 @@ from rest_framework import viewsets
 
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
-from .serializers import CategorySerializer, ProductSerializer, OrderSerializer, ProductDetailSerializer, ReviewSerializer, DiscountSerializer, CartItemSerializer, PaymentSerializer, DeliverySerializer
+from .serializers import CategorySerializer, ProductSerializer, OrderSerializer, ProductDetailSerializer, ReviewSerializer, DiscountSerializer, CartItemSerializer, PaymentSerializer, DeliverySerializer, ProductAllSerializer
 
 from .models import Category, Product, Order,ProductDetail, Review, Discount, Delivery, CartItem, Payment
 
@@ -19,6 +19,10 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework import permissions
 
 from django.contrib.auth import get_user_model
+
+from django.db.models import Q
+
+from django.http.response import JsonResponse
 
 
 User = get_user_model()
@@ -108,6 +112,14 @@ class CartItemViewset(viewsets.ModelViewSet):
 
 
 
+class ProductAllViewset(viewsets.ModelViewSet):
+    authentication_classes=[JWTAuthentication]
+    queryset = Product.objects.all()
+    serializer_class =   ProductAllSerializer  
+
+
+
+
 
 
 class IsSuperUser(APIView):
@@ -128,6 +140,59 @@ class IsSuperUser(APIView):
 
 
 
+
+class SearchProduct(APIView):
+    def post(self, request):
+        search =  request.data['search']
+        categoryId = request.data['categoryId']
+ 
+        print("category id : PPPPPPPPPPPPPPPP: ", categoryId , "request.data", request.data)
+
+        if categoryId :
+            products = Product.objects.filter(category__exact=categoryId).filter(Q(name__icontains=search) | Q(price__icontains = search)).values()
+            print("SEARCHED PRODUCTS : ", products)      
+            return Response({"data": products})
+
+
+        products = Product.objects.filter(Q(name__icontains=search) | Q(price__icontains = search)).values()
+        print("SEARCHED PRODUCTS : ", products)      
+        return Response({"data": products})
+
+
+
+class searchProductDetail(APIView):
+    def post(self, request):
+        color = request.data['color']
+        size = request.data['size']
+        productId = request.data['productId']
+        product = Product.objects.filter(id__exact=productId).values()
+
+        if color and color != "":
+            productDetails = ProductDetail.objects.filter(product__exact=productId).filter(available_color__iexact= color).values()
+            
+        
+
+        elif size and size != "": 
+            productDetails = ProductDetail.objects.filter(product__exact=productId).filter(available_size__iexact= size).values()
+           
+
+
+        else:
+            productDetails =  ProductDetail.objects.filter(product__exact=productId).values()
+           
+
+        print("Product : ", product[0])
+        data ={
+            'id': productId,
+            'name': product[0]['name'],
+            'price':product[0]['price'],
+            'category':product[0]['category_id'],
+            'imageUrl': product[0]['imageUrl'],
+            'product_details': productDetails
+        }     
+
+        print("DATATA : ", data)  
+        return Response({"data": data})     
 
 
 # class CustomerViewset(viewsets.ModelViewSet):

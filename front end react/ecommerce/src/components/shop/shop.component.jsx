@@ -11,7 +11,11 @@ import { useEffect } from 'react'
 import { fetchProduct } from '../../store/product/productSlice'
 
 
+import { searchProduct } from '../../store/product/productSlice'
+
+
 import { useNavigate } from 'react-router-dom'
+import ProductCard from '../product-card/product-card.component'
 
 
 const Shop = () => {
@@ -29,26 +33,21 @@ const Shop = () => {
 const products = useSelector(state => state.product.products)
 console.log("PRODUCTSS  :   ", products);
 
+const onChangeHandler =(e)=>{
+    const search = e.target.value
+    dispatch(searchProduct(search))
+}
+
+
+
 
   return (
     <div>
         <h2>Shop Now</h2>
+        <input type='search' placeholder='Search Here' onChange={onChangeHandler} />
+
         {
-            products && products.map(product => (
-                <div>
-                    <h3>{product.name}</h3>
-                    <p>Price :   ${product.price}</p>
-                    <img src={product.imageUrl} alt='product' />
-                    <p onClick={()=>navigate('/productDetail', {state:{ productId: product.id,
-                    productImage: product.imageUrl ,
-                    productPrice: product.price
-                     }})} >See Details</p>
-
-
-
-                </div>
-
-            ))
+            products && products.map(product => <ProductCard product={product}/>)
         }
       
     </div>

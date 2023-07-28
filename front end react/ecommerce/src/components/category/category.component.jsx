@@ -13,6 +13,9 @@ import { axiosGET } from '../../axiosApi'
 import './category.styles.css'
 
 
+import { useNavigate } from 'react-router-dom'
+
+
 
 
 
@@ -21,8 +24,10 @@ const Category = () => {
 
     const dispatch = useDispatch()
 
+    const navigate = useNavigate()
 
-   
+
+
 
     useEffect(() => {
 
@@ -37,17 +42,22 @@ const Category = () => {
 
     }, [])
 
- const categories = useSelector(state => state.category.categories)
+    const categories = useSelector(state => state.category.categories)
     console.log("CATEEEE :  ", categories);
 
     return (
         <div>
             <h2>Category</h2>
             {
-               categories && categories.map(category => (
+                categories && categories.map(category => (
                     <div className='category-container'>
-                    <h4>{category.name}</h4>
-                    <img src={category.imageUrl} alt="category" />
+                        <h4 onClick={() => navigate('/categoryShop', {
+                            state: {
+                                categoryId: category.id,
+                                categoryName: category.name
+                            }
+                        })}>{category.name}</h4>
+                        <img src={category.imageUrl} alt="category" />
                     </div>
                 ))
             }

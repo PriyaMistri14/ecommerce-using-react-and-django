@@ -2,7 +2,7 @@ import React from 'react'
 
 import { useLocation } from 'react-router-dom'
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 
 import { useDispatch } from 'react-redux'
@@ -16,89 +16,151 @@ import './product-detail.styles.css'
 import { updateCartItem } from '../../store/cart/cartSlice'
 
 
+import { searchProductDetail } from '../../store/product/productSlice'
+
+
 
 
 const ProductDetail = () => {
 
-    const location = useLocation()
 
-    console.log("LOCATION VALUE PRODUCT ID :  ", location.state);
+  const colors = ['Red', 'Black', 'Blue', 'Green', 'Pink', 'Orange', 'White']
+  const sizes = ['XXXS', 'XXS', 'XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL']
 
-    const productId = location.state.productId
-    const productImage = location.state.productImage
-    const productPrice = location.state.productPrice
+  const location = useLocation()
 
-console.log("Product id and product img and product price : ", productId, productImage, productPrice);
+  console.log("LOCATION VALUE PRODUCT ID :  ", location.state);
 
+  const productId = location.state.productId
+  const productImage = location.state.productImage  //not needed
+  const productPrice = location.state.productPrice
 
-
-    const dispatch = useDispatch()
-
-    useEffect(()=>{
-        dispatch(fetchProductDetail(productId))
-    }, [])
+  console.log("Product id and product img and product price : ", productId, productImage, productPrice);
 
 
-    const productDetail = useSelector(state => state.product.productDetail)
 
-    console.log("Product details:  ", productDetail);
+  const dispatch = useDispatch()
 
-    const userId = useSelector(state => state.user.currentUser.userId)
-
-    const quantity = useSelector(state => state.cart.cartCount)
-
-    const cartItems = useSelector(state => state.cart.cartItems)
-
-    console.log("CART ITEMS :  ", cartItems);
+  useEffect(() => {
+    dispatch(fetchProductDetail(productId))
+  }, [])
 
 
-    const addItemToCart = (productDetail)=>{
-        const productDetailId = productDetail.id
-        const payload = {
-            user : userId,
-            product_detail : productDetailId,
-            quantity : quantity
-        }
-        const item ={
-            productId:productDetail.product,
-            productDetailId : productDetailId,
-            color : productDetail.available_color,
-            size : productDetail.available_size,
-            image: productImage,
-            price : productPrice
+  const productDetail = useSelector(state => state.product.productDetail.product_details)
+  const wholeProduct = useSelector(state => state.product.productDetail)
 
-        }
 
-      const data = {
-        payload,
-        item
-      }
+  console.log("Product details:UUUUUUU  ", productDetail);
 
-        console.log("PAYLOADDDD :  ", payload, "Product Detailllllll : ", productDetail, "itemmm : " , item);
-        dispatch(updateCartItem(data))
+  const userId = useSelector(state => state.user.currentUser.userId)
+
+  const totalQuantity = useSelector(state => state.cart.cartCount)
+
+  const total = useSelector(state => state.cart.cartTotal)
+
+  const cartItems = useSelector(state => state.cart.cartItems)
+
+  console.log("CART ITEMS :  ", cartItems, "Total quntity : ", totalQuantity, "total : ", total);
+
+
+  const addItemToCart = (productDetail) => {
+    const productDetailId = productDetail.id
+    // for backend 
+    const payload = {
+      user: userId,
+      product_detail: productDetailId,
+      quantity: totalQuantity
     }
+
+
+    const item = {
+      wholeProduct,
+      productDetail
+    }
+
+    const data = {
+      payload,
+      item
+    }
+
+    console.log("PAYLOADDDD :  ", payload, "Product Detailllllll : ", productDetail, "itemmm : ", item);
+
+    if (productDetail.available_quantity == 0) {
+      alert("No more quantity avaliable!!")
+
+    }
+    else {
+
+      dispatch(updateCartItem(data))
+
+    }
+  }
+
+
+const onColorChangeHandler = (e)=>{
+  const payload ={
+    color: e.target.value,
+    productId: productId,
+    size: null
+  }
+dispatch(searchProductDetail(payload))
+  
+
+
+
+}
+
+const onSizeChangeHandler = (e) =>{
+  const payload ={
+    size: e.target.value,
+    productId: productId,
+    color: null
+  }
+dispatch(searchProductDetail(payload))
+ 
+}
+
+
+
+
+
 
 
   return (
     <div>
-        <h2>Details</h2>
+      <h2>Details</h2>
+
+      <select onChange={onColorChangeHandler}>
+        <option selected value="" >Search by Color</option>
         {
-            productDetail &&  productDetail.length != 0 ?
-              productDetail.map(product =>(
-                <div className='product-detail-container'>
-                    <img src={productImage} alt='product' />
-                <p>Available quantity : {product.available_quantity}</p>
-                <p>Available size : {product.available_size}</p>
-                <p>Available color : {product.available_color}</p>
-                <p className='add-to-cart' onClick={()=>addItemToCart(product)}>Add to Cart</p>
+          colors.map(color => <option value={color}>{color}</option>)
+        }
+      </select>
 
-                </div>
-              )
+      <select onChange={onSizeChangeHandler}>
+        <option selected value="" >Search by Size</option>
+        {
+          sizes.map(size => <option value={size}>{size}</option>)
+        }
+      </select>
 
-              ) 
-            : "No Details found for given product!!"
-         }
-      
+      {
+        productDetail && productDetail.length != 0 ?
+          productDetail.map(product => (
+            <div className='product-detail-container'>
+              <img src={productImage} alt='product' />
+              <p>Available quantity : {product.available_quantity}</p>
+              <p>Available size : {product.available_size}</p>
+              <p>Available color : {product.available_color}</p>
+              <p className='add-to-cart' onClick={() => addItemToCart(product)}>Add to Cart</p>
+
+            </div>
+          )
+
+          )
+          : "No Details found for given product!!"
+      }
+
     </div>
   )
 }

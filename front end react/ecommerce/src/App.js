@@ -26,6 +26,11 @@ import Category from './components/category/category.component';
 
 import Shop from './components/shop/shop.component';
 import ProductDetail from './components/product-detail/product-detail.component';
+import CartIcon from './components/cart-icon/cart-icon.component';
+
+import CartDropdown from './components/cart-dropdown/cart-dropdown.component';
+import CategoryShop from './components/category-shop/category-shop.component';
+
 
 
 
@@ -38,6 +43,8 @@ function App() {
   const navigate = useNavigate()
 
   const dispatch = useDispatch()
+
+  const isCartOpen = useSelector(state => state.cart.isCartOpen)
 
 
 
@@ -72,12 +79,18 @@ function App() {
       <header className="App-header">
         <nav className='nav-container'>
           <Link to='/'>LOGO</Link>
+          <Link to='/category'>Category</Link>
           <Link to='/shop'>Shop Now</Link>
 
-{
-currentUser ? <p onClick={logoutHandler}>Logout</p> :  <Link to='/selectUserOrAdmin'>Login</Link>
+          {
+            isCartOpen && <CartDropdown />
+          }
 
-}
+          {
+            currentUser ? <p onClick={logoutHandler}>Logout</p> : <Link to='/selectUserOrAdmin'>Login</Link>
+
+          }
+          <CartIcon />
         </nav>
 
 
@@ -86,10 +99,12 @@ currentUser ? <p onClick={logoutHandler}>Logout</p> :  <Link to='/selectUserOrAd
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/selectUserOrAdmin" element={<SelectUserOrAdmin />} />
-          <Route path="/category" element= {<Category />} />
-          <Route path="/shop" element= {<Shop />} />
-          <Route path='/productDetail' element= {<ProductDetail />} /> 
-          
+          <Route path="/category" element={<Category />} />
+          <Route path="/shop" element={<Shop />} />
+          <Route path='/productDetail' element={<ProductDetail />} />
+          <Route path='/categoryShop' element={<CategoryShop />}   />
+
+
         </Routes>
 
       </header>
