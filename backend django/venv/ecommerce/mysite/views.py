@@ -4,7 +4,7 @@ from rest_framework import viewsets
 
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
-from .serializers import CategorySerializer, ProductSerializer, OrderSerializer, ProductDetailSerializer, ReviewSerializer, DiscountSerializer, CartItemSerializer, PaymentSerializer, DeliverySerializer, ProductAllSerializer
+from .serializers import CategorySerializer, ProductSerializer, OrderSerializer, ProductDetailSerializer, ReviewSerializer, DiscountSerializer, CartItemSerializer, PaymentSerializer, DeliverySerializer, ProductAllSerializer, UserSerializer
 
 from .models import Category, Product, Order,ProductDetail, Review, Discount, Delivery, CartItem, Payment
 
@@ -24,6 +24,8 @@ from django.db.models import Q
 
 from django.http.response import JsonResponse
 
+from .pagination import PageNumberWithPageSizePagination
+
 
 User = get_user_model()
 
@@ -34,6 +36,15 @@ class CategoryViewset(viewsets.ModelViewSet):
     authentication_classes= [JWTAuthentication]
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+    pagination_class = PageNumberWithPageSizePagination
+
+    def get_queryset(self):
+        queryset = Category.objects.all()
+        order = self.request.query_params.get("ordering")
+        print("ORDERRRRR ?????????????????????????? ", order)
+        if order is not None:
+            queryset = queryset.order_by(order)
+        return queryset
 
     # def get_permissions(self):
     #     if self.request.method in ['PUT', 'DELETE','POST','PATCH']:
@@ -45,6 +56,15 @@ class ProductViewset(viewsets.ModelViewSet):
     authentication_classes= [JWTAuthentication]
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+    pagination_class = PageNumberWithPageSizePagination
+
+    def get_queryset(self):
+     queryset = Product.objects.all()
+     order = self.request.query_params.get("ordering")
+     print("ORDERRRRR ?????????????????????????? ", order)
+     if order is not None:
+         queryset = queryset.order_by(order)
+     return queryset
 
     # def get_permissions(self):
     #     if self.request.method in ['PUT', 'DELETE','POST','PATCH']:
@@ -55,7 +75,16 @@ class ProductViewset(viewsets.ModelViewSet):
 class OrderViewset(viewsets.ModelViewSet):
     authentication_classes= [JWTAuthentication]
     queryset = Order.objects.all()
-    serializer_class = OrderSerializer    
+    serializer_class = OrderSerializer  
+    pagination_class = PageNumberWithPageSizePagination  
+
+    def get_queryset(self):
+     queryset = Order.objects.all()
+     order = self.request.query_params.get("ordering")
+     print("ORDERRRRR ?????????????????????????? ", order)
+     if order is not None:
+         queryset = queryset.order_by(order)
+     return queryset
 
 
 
@@ -63,6 +92,16 @@ class ProductDetailViewset(viewsets.ModelViewSet):
     authentication_classes= [JWTAuthentication]
     queryset = ProductDetail.objects.all()
     serializer_class = ProductDetailSerializer
+    pagination_class =PageNumberWithPageSizePagination
+
+
+    def get_queryset(self):
+     queryset = ProductDetail.objects.all()
+     order = self.request.query_params.get("ordering")
+     print("ORDERRRRR ?????????????????????????? ", order)
+     if order is not None:
+         queryset = queryset.order_by(order)
+     return queryset
 
     # def get_permissions(self):
     #     if self.request.method in ['PUT', 'DELETE','POST','PATCH']:
@@ -75,6 +114,16 @@ class ReviewViewset(viewsets.ModelViewSet):
     authentication_classes = [JWTAuthentication]
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
+    pagination_class = PageNumberWithPageSizePagination
+
+
+    def get_queryset(self):
+     queryset = Review.objects.all()
+     order = self.request.query_params.get("ordering")
+     print("ORDERRRRR ?????????????????????????? ", order)
+     if order is not None:
+         queryset = queryset.order_by(order)
+     return queryset
 
 
 
@@ -82,6 +131,15 @@ class DiscountViewset(viewsets.ModelViewSet):
     authentication_classes= [JWTAuthentication]
     queryset = Discount.objects.all()
     serializer_class = DiscountSerializer 
+    pagination_class = PageNumberWithPageSizePagination
+
+    def get_queryset(self):
+     queryset = Discount.objects.all()
+     order = self.request.query_params.get("ordering")
+     print("ORDERRRRR ?????????????????????????? ", order)
+     if order is not None:
+         queryset = queryset.order_by(order)
+     return queryset
 
     # def get_permissions(self):
     #     if self.request.method in ['PUT', 'DELETE','POST','PATCH']:
@@ -93,6 +151,16 @@ class DeliveryViewset(viewsets.ModelViewSet):
      authentication_classes = [JWTAuthentication]
      queryset = Delivery.objects.all()
      serializer_class = DeliverySerializer
+     pagination_class = PageNumberWithPageSizePagination
+
+
+     def get_queryset(self):
+        queryset = Delivery.objects.all()
+        order = self.request.query_params.get("ordering")
+        print("ORDERRRRR ?????????????????????????? ", order)
+        if order is not None:
+            queryset = queryset.order_by(order)
+        return queryset
 
 
 
@@ -101,6 +169,15 @@ class PaymentViewset(viewsets.ModelViewSet):
     authentication_classes= [JWTAuthentication]
     queryset = Payment.objects.all()
     serializer_class = PaymentSerializer
+    pagination_class = PageNumberWithPageSizePagination
+
+    def get_queryset(self):
+        queryset = Payment.objects.all()
+        order = self.request.query_params.get("ordering")
+        print("ORDERRRRR ?????????????????????????? ", order)
+        if order is not None:
+            queryset = queryset.order_by(order)
+        return queryset
 
 
 
@@ -108,6 +185,15 @@ class CartItemViewset(viewsets.ModelViewSet):
     authentication_classes = [JWTAuthentication]
     queryset = CartItem.objects.all()
     serializer_class = CartItemSerializer
+    pagination_class = PageNumberWithPageSizePagination
+
+    def get_queryset(self):
+        queryset = CartItem.objects.all()
+        order = self.request.query_params.get("ordering")
+        print("ORDERRRRR ?????????????????????????? ", order)
+        if order is not None:
+            queryset = queryset.order_by(order)
+        return queryset
 
 
 
@@ -116,6 +202,15 @@ class ProductAllViewset(viewsets.ModelViewSet):
     authentication_classes=[JWTAuthentication]
     queryset = Product.objects.all()
     serializer_class =   ProductAllSerializer  
+    pagination_class = PageNumberWithPageSizePagination
+
+    def get_queryset(self):
+        queryset = Product.objects.all()
+        order = self.request.query_params.get("ordering")
+        print("ORDERRRRR ?????????????????????????? ", order)
+        if order is not None:
+            queryset = queryset.order_by(order)
+        return queryset
 
 
 
@@ -160,7 +255,7 @@ class SearchProduct(APIView):
 
 
 
-class searchProductDetail(APIView):
+class SearchProductDetail(APIView):
     def post(self, request):
         color = request.data['color']
         size = request.data['size']
@@ -193,6 +288,25 @@ class searchProductDetail(APIView):
 
         print("DATATA : ", data)  
         return Response({"data": data})     
+
+
+class UserViewset(viewsets.ModelViewSet):
+    authentication_classes=[JWTAuthentication]
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    pagination_class = PageNumberWithPageSizePagination
+
+    def get_queryset(self):
+        queryset = User.objects.all()
+        order = self.request.query_params.get("ordering")
+        print("ORDERRRRR ?????????????????????????? ", order)
+        if order is not None:
+            queryset = queryset.order_by(order)
+        return queryset
+
+
+
+
 
 
 # class CustomerViewset(viewsets.ModelViewSet):

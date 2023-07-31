@@ -7,12 +7,12 @@ const SelectUserOrAdmin = () => {
     const navigate = useNavigate()
 
     const loginAsadmin = ()=>{
-        navigate("/login",{state:"admin"} )
+        navigate("/loginUser",{state:"admin"} )
     }
 
 
     const loginAsUser = ()=>{
-        navigate("/login", {state: "user"})
+        navigate("/loginUser", {state: "user"})
     }
 
 

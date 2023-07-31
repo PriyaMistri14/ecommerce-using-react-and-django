@@ -30,6 +30,9 @@ export const userSlice= createSlice({
     reducers:{
         removeCurrentUser: (state, action)=>{
             state.currentUser = null
+        },
+        setIsAdmin: (state, action)=>{           
+            state.isAdmin = true
         }
     },
     extraReducers(builder){
@@ -58,6 +61,6 @@ export const userSlice= createSlice({
 })
 
 
-export const  {removeCurrentUser} =  userSlice.actions
+export const  {removeCurrentUser, setIsAdmin} =  userSlice.actions
 
 export default userSlice.reducer

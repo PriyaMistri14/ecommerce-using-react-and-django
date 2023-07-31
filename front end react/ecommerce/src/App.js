@@ -30,10 +30,26 @@ import CartIcon from './components/cart-icon/cart-icon.component';
 
 import CartDropdown from './components/cart-dropdown/cart-dropdown.component';
 import CategoryShop from './components/category-shop/category-shop.component';
+import AdminPanel from './components/admin-panel/admin-panel.component';
+
+import { Admin, Resource } from 'react-admin'
+
+import restProvider from 'ra-data-simple-rest'
+
+import CategoryList from './components/category/category-list.component';
 
 
+// ..............
+
+import drfProvider, { jwtTokenAuthProvider, fetchJsonWithAuthJWTToken } from 'ra-data-django-rest-framework';
+import CategoryCreate from './components/category/category-create.component';
+import CategoryEdit from './components/category/category-edit.component';
+
+const authProvider = jwtTokenAuthProvider()
+const dataProvider = drfProvider("http://localhost:8000/mysite", fetchJsonWithAuthJWTToken);
 
 
+// const dataProvider = drfProvider("http://localhost:8000/mysite");
 
 
 
@@ -45,6 +61,10 @@ function App() {
   const dispatch = useDispatch()
 
   const isCartOpen = useSelector(state => state.cart.isCartOpen)
+
+  const isAdmin = useSelector(state => state.user.isAdmin)
+
+  console.log("ISADMIN :  ", isAdmin);
 
 
 
@@ -77,35 +97,46 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <nav className='nav-container'>
-          <Link to='/'>LOGO</Link>
-          <Link to='/category'>Category</Link>
-          <Link to='/shop'>Shop Now</Link>
+      
+        {
+          isAdmin ? <AdminPanel />:
+            <nav className='nav-container'>
+              <Link to='/'>LOGO</Link>
+              {/* <Link to='/adminPanel'>Admin</Link> */}
+              <Link to='/categoryUser'>Category</Link>
+              <Link to='/shop'>Shop Now</Link>
 
-          {
-            isCartOpen && <CartDropdown />
-          }
+              {
+                isCartOpen && <CartDropdown />
+              }
 
-          {
-            currentUser ? <p onClick={logoutHandler}>Logout</p> : <Link to='/selectUserOrAdmin'>Login</Link>
+              {
+                currentUser ? <p onClick={logoutHandler}>Logout</p> : <Link to='/selectUserOrAdmin'>Login</Link>
 
-          }
-          <CartIcon />
-        </nav>
+              }
+              <CartIcon />
+            </nav>
+        }
 
-
+        {/* <Admin dataProvider={dataProvider}> */}
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/loginUser" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/selectUserOrAdmin" element={<SelectUserOrAdmin />} />
-          <Route path="/category" element={<Category />} />
+          <Route path="/categoryUser" element={<Category />} />
           <Route path="/shop" element={<Shop />} />
-          <Route path='/productDetail' element={<ProductDetail />} />
-          <Route path='/categoryShop' element={<CategoryShop />}   />
-
+          <Route path='/productDetailUser' element={<ProductDetail />} />
+          <Route path='/categoryShop' element={<CategoryShop />} />
+          {/* <Route path='/api/token/' element= {<AdminPanel />} /> */}
+          {/* <Route path='/adminPanel' element={<AdminPanel />}/> */}
 
         </Routes>
+        {/* {
+          isAdmin  &&  <Resource name='category' list={CategoryList} create={CategoryCreate} edit={CategoryEdit} />
+        } */}
+        {/* <Resource name='category' list={CategoryList} create={CategoryCreate} edit={CategoryEdit} /> */}
+        {/* </Admin> */}
 
       </header>
     </div>

@@ -13,12 +13,13 @@ import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { useSelector } from 'react-redux'
 
-import { checkIsAdmin, setCurrentUser } from '../../store/user/userSlice'
+import { checkIsAdmin, setCurrentUser, setIsAdmin } from '../../store/user/userSlice'
 
 import { useEffect } from 'react'
 
 
 import { useLocation } from 'react-router-dom'
+import AdminPanel from '../admin-panel/admin-panel.component'
 
 
 
@@ -43,10 +44,21 @@ const Login = () => {
     const isAdmin = useSelector(state => state.user.isAdmin)
     console.log("ISADMIN   :    ", isAdmin);
 
+    if(userType == 'admin'){
+        console.log("if is called");
+        const res = dispatch(setIsAdmin())
+        console.log("Response in if after : ", res);
+    }
+
+
 
     useEffect(() => {
-        currentUser && navigate("/category")
+        currentUser && navigate("/categoryUser")      
+        
     }, [])
+
+    console.log("ISADMIN AFTER   :    ", isAdmin);
+
 
 
     const initialValues = {
@@ -66,40 +78,40 @@ const Login = () => {
         }
 
 
-        if (userType == 'admin') {
+        // if (userType == 'admin') {
 
-            const resCheckAdmin = await dispatch(checkIsAdmin(payload))
-            console.log("Checkis admin res:  ", resCheckAdmin);
+        //     const resCheckAdmin = await dispatch(checkIsAdmin(payload))
+        //     console.log("Checkis admin res:  ", resCheckAdmin);
 
-            if (resCheckAdmin.meta.requestStatus === 'fulfilled' && !resCheckAdmin.payload.data) {
+        //     if (resCheckAdmin.meta.requestStatus === 'fulfilled' && !resCheckAdmin.payload.data) {
 
-                console.log("RESPONSE: isADmin user  ", resCheckAdmin.payload.data);
-                field.setFieldError("password", "No active ADMIN account found for given credentials!!")
-            }
-            else {
+            
+        //         field.setFieldError("password", "No active ADMIN account found for given credentials!!")
+        //     }
+        //     else {
 
-                const res = await dispatch(setCurrentUser(payload))
-                console.log("RES:  ", res);
+        //         const res = await dispatch(setCurrentUser(payload))
+        //         console.log("RES:  ", res);
 
-                if (res.meta.requestStatus === 'fulfilled') {
-                    // const res = await axiosPOST("auth/login/", payload)
-                    console.log("RESPONSE:  ", res.payload.access);
-                    axiosIntance.defaults.headers['Authorization'] = 'JWT ' + res.payload.access
-                    localStorage.setItem("access_token", res.payload.access)
-                    localStorage.setItem("refresh_token", res.payload.refresh)
-                    alert("Successfully Login!!")
-                    navigate("/")
-                }
+        //         if (res.meta.requestStatus === 'fulfilled') {
+        //             // const res = await axiosPOST("auth/login/", payload)
+        //             console.log("RESPONSE:  ", res.payload.access);
+        //             axiosIntance.defaults.headers['Authorization'] = 'JWT ' + res.payload.access
+        //             localStorage.setItem("access_token", res.payload.access)
+        //             localStorage.setItem("refresh_token", res.payload.refresh)
+        //             alert("Successfully Login!!")
+        //             navigate("/")
+        //         }
 
-                // res.meta.requestStatus === 'rejected'
+        //         // res.meta.requestStatus === 'rejected'
 
-                else {
-                    field.setFieldError("password", "Invalid credential!!")
-                }
-            }
-        }
+        //         else {
+        //             field.setFieldError("password", "Invalid credential!!")
+        //         }
+        //     }
+        // }
 
-        else {
+        // else {
 
 
             const res = await dispatch(setCurrentUser(payload))
@@ -112,7 +124,7 @@ const Login = () => {
                 localStorage.setItem("access_token", res.payload.access)
                 localStorage.setItem("refresh_token", res.payload.refresh)
                 alert("Successfully Login!!")
-                navigate("/category")
+                navigate("/categoryUser")
             }
 
             // res.meta.requestStatus === 'rejected'
@@ -122,7 +134,7 @@ const Login = () => {
             }
 
 
-        }
+        // }
 
 
 
@@ -140,6 +152,7 @@ const Login = () => {
 
     return (
         <div>
+          
             <h2>Login Form</h2>
 
             <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit} >

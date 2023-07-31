@@ -20,7 +20,7 @@ const ProductCard = (props) => {
             <h3>{product.name}</h3>
             <p>Price :   ${product.price}</p>
             <img src={product.imageUrl} alt='product' />
-            <p onClick={() => navigate('/productDetail', {
+            <p onClick={() => navigate('/productDetailUser', {
                 state: {
                     productId: product.id,
                     productImage: product.imageUrl,
