@@ -13,13 +13,14 @@ import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { useSelector } from 'react-redux'
 
-import { checkIsAdmin, setCurrentUser, setIsAdmin } from '../../store/user/userSlice'
+import { checkIsAdmin, removeCurrentUser, setCurrentUser, setIsAdmin } from '../../store/user/userSlice'
 
 import { useEffect } from 'react'
 
 
 import { useLocation } from 'react-router-dom'
 import AdminPanel from '../admin-panel/admin-panel.component'
+import { jwtTokenAuthProvider } from 'ra-data-django-rest-framework'
 
 
 
@@ -46,14 +47,22 @@ const Login = () => {
 
     if(userType == 'admin'){
         console.log("if is called");
-        const res = dispatch(setIsAdmin())
+        const res = dispatch(setIsAdmin(true))
         console.log("Response in if after : ", res);
     }
 
 
 
     useEffect(() => {
-        currentUser && navigate("/categoryUser")      
+        const token = localStorage.getItem('access_token')
+
+        if (currentUser !== null && token) {
+            isAdmin ? navigate('/category') : navigate('/categoryUser')
+
+        }
+      
+      
+  
         
     }, [])
 
@@ -78,40 +87,41 @@ const Login = () => {
         }
 
 
-        // if (userType == 'admin') {
+        if (isAdmin) {
 
-        //     const resCheckAdmin = await dispatch(checkIsAdmin(payload))
-        //     console.log("Checkis admin res:  ", resCheckAdmin);
+            const resCheckAdmin = await dispatch(checkIsAdmin(payload))
+            console.log("Checkis admin res:  ", resCheckAdmin);
 
-        //     if (resCheckAdmin.meta.requestStatus === 'fulfilled' && !resCheckAdmin.payload.data) {
+            if (resCheckAdmin.meta.requestStatus === 'fulfilled' && !resCheckAdmin.payload) {
+                console.log("If condition is true");
 
             
-        //         field.setFieldError("password", "No active ADMIN account found for given credentials!!")
-        //     }
-        //     else {
+                field.setFieldError("password", "No active ADMIN account found for given credentials!!")
+            }
+            else {
 
-        //         const res = await dispatch(setCurrentUser(payload))
-        //         console.log("RES:  ", res);
+                const res = await dispatch(setCurrentUser(payload))
+                console.log("RES:  ", res);
 
-        //         if (res.meta.requestStatus === 'fulfilled') {
-        //             // const res = await axiosPOST("auth/login/", payload)
-        //             console.log("RESPONSE:  ", res.payload.access);
-        //             axiosIntance.defaults.headers['Authorization'] = 'JWT ' + res.payload.access
-        //             localStorage.setItem("access_token", res.payload.access)
-        //             localStorage.setItem("refresh_token", res.payload.refresh)
-        //             alert("Successfully Login!!")
-        //             navigate("/")
-        //         }
+                if (res.meta.requestStatus === 'fulfilled') {
+                    // const res = await axiosPOST("auth/login/", payload)
+                    console.log("RESPONSE:  ", res.payload.access);
+                    axiosIntance.defaults.headers['Authorization'] = 'JWT ' + res.payload.access
+                    localStorage.setItem("access_token", res.payload.access)
+                    localStorage.setItem("refresh_token", res.payload.refresh)
+                    alert("Successfully Login!! as Admin!!")
+                    navigate("/category")
+                }
 
-        //         // res.meta.requestStatus === 'rejected'
+                // res.meta.requestStatus === 'rejected'
 
-        //         else {
-        //             field.setFieldError("password", "Invalid credential!!")
-        //         }
-        //     }
-        // }
+                else {
+                    field.setFieldError("password", "Invalid credential!!")
+                }
+            }
+        }
 
-        // else {
+        else {
 
 
             const res = await dispatch(setCurrentUser(payload))
@@ -123,7 +133,7 @@ const Login = () => {
                 axiosIntance.defaults.headers['Authorization'] = 'JWT ' + res.payload.access
                 localStorage.setItem("access_token", res.payload.access)
                 localStorage.setItem("refresh_token", res.payload.refresh)
-                alert("Successfully Login!!")
+                alert("Successfully Login!! as User !!!")
                 navigate("/categoryUser")
             }
 
@@ -134,7 +144,7 @@ const Login = () => {
             }
 
 
-        // }
+        }
 
 
 
@@ -148,12 +158,22 @@ const Login = () => {
     })
 
 
+const changeRole = ()=>{
+    dispatch(removeCurrentUser())
+    dispatch(setIsAdmin(false))
+    navigate('/selectUserOrAdmin')
+}
+
+
+
+
 
 
     return (
         <div>
-          
+          <p onClick={changeRole}>Change Role</p>
             <h2>Login Form</h2>
+            
 
             <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit} >
                 <Form >

@@ -23,35 +23,45 @@ const Shop = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
-    useEffect(()=>{
-        dispatch(fetchProduct())
+    const currentUser = useSelector(state => state.user.currentUser)
+    const isAdmin = useSelector(state => state.user.isAdmin)
 
+    useEffect(() => {
+        if (currentUser !== null) {
+            isAdmin ? navigate('/category') : dispatch(fetchProduct())
 
-
-    },[])
-
-const products = useSelector(state => state.product.products)
-console.log("PRODUCTSS  :   ", products);
-
-const onChangeHandler =(e)=>{
-    const search = e.target.value
-    dispatch(searchProduct(search))
-}
-
-
-
-
-  return (
-    <div>
-        <h2>Shop Now</h2>
-        <input type='search' placeholder='Search Here' onChange={onChangeHandler} />
-
-        {
-            products && products.map(product => <ProductCard product={product}/>)
         }
-      
-    </div>
-  )
+        else {
+            navigate('/selectUserOrAdmin')
+        }
+
+
+
+
+    }, [])
+
+    const products = useSelector(state => state.product.products)
+    console.log("PRODUCTSS  :   ", products);
+
+    const onChangeHandler = (e) => {
+        const search = e.target.value
+        dispatch(searchProduct(search))
+    }
+
+
+
+
+    return (
+        <div>
+            <h2>Shop Now</h2>
+            <input type='search' placeholder='Search Here' onChange={onChangeHandler} />
+
+            {
+                products && products.map(product => <ProductCard product={product} />)
+            }
+
+        </div>
+    )
 }
 
 export default Shop

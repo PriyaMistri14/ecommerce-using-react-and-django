@@ -25,14 +25,15 @@ export const userSlice= createSlice({
         currentUser : null,
         isLoading:false,
         error: null,
-        isAdmin: false
+        isAdmin: false,
+        isAdminFound: false
     },
     reducers:{
         removeCurrentUser: (state, action)=>{
             state.currentUser = null
         },
         setIsAdmin: (state, action)=>{           
-            state.isAdmin = true
+            state.isAdmin = action.payload
         }
     },
     extraReducers(builder){
@@ -53,7 +54,7 @@ export const userSlice= createSlice({
         })
 
         .addCase(checkIsAdmin.fulfilled, (state, action)=>{
-            state.isAdmin = action.payload
+            state.isAdminFound = action.payload
         })
     }
 

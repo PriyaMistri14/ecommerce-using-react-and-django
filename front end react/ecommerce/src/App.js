@@ -38,12 +38,15 @@ import restProvider from 'ra-data-simple-rest'
 
 import CategoryList from './components/category/category-list.component';
 
+import Logout from './components/logout/logout.component';
+
 
 // ..............
 
 import drfProvider, { jwtTokenAuthProvider, fetchJsonWithAuthJWTToken } from 'ra-data-django-rest-framework';
 import CategoryCreate from './components/category/category-create.component';
 import CategoryEdit from './components/category/category-edit.component';
+import Checkout from './components/checkout/checkout.component';
 
 const authProvider = jwtTokenAuthProvider()
 const dataProvider = drfProvider("http://localhost:8000/mysite", fetchJsonWithAuthJWTToken);
@@ -68,29 +71,29 @@ function App() {
 
 
 
-  const logoutHandler = async () => {
+  // const logoutHandler = async () => {
 
-    try {
+  //   try {
 
-      const res = await axiosPOST("auth/logout/", {
-        refresh_token: localStorage.getItem("refresh_token")
-      })
+  //     const res = await axiosPOST("auth/logout/", {
+  //       refresh_token: localStorage.getItem("refresh_token")
+  //     })
 
-    }
-    catch (error) {
-      console.log("Error while blacklisting tthe token :::::", error)
-    }
+  //   }
+  //   catch (error) {
+  //     console.log("Error while blacklisting tthe token :::::", error)
+  //   }
 
-    dispatch(removeCurrentUser())
-
-
-    axiosIntance.defaults.headers["Authorization"] = null
-    localStorage.removeItem("access_token")
-    localStorage.removeItem("refresh_token")
-    navigate("/selectUserOrAdmin")
+  //   dispatch(removeCurrentUser())
 
 
-  }
+  //   axiosIntance.defaults.headers["Authorization"] = null
+  //   localStorage.removeItem("access_token")
+  //   localStorage.removeItem("refresh_token")
+  //   navigate("/selectUserOrAdmin")
+
+
+  // }
 
 
 
@@ -111,7 +114,7 @@ function App() {
               }
 
               {
-                currentUser ? <p onClick={logoutHandler}>Logout</p> : <Link to='/selectUserOrAdmin'>Login</Link>
+                currentUser ? <Logout /> : <Link to='/selectUserOrAdmin'>Login</Link>
 
               }
               <CartIcon />
@@ -128,6 +131,8 @@ function App() {
           <Route path="/shop" element={<Shop />} />
           <Route path='/productDetailUser' element={<ProductDetail />} />
           <Route path='/categoryShop' element={<CategoryShop />} />
+          <Route path='/checkout' element={<Checkout />} />
+
           {/* <Route path='/api/token/' element= {<AdminPanel />} /> */}
           {/* <Route path='/adminPanel' element={<AdminPanel />}/> */}
 

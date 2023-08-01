@@ -2,7 +2,9 @@ import React from 'react'
 
 import { useLocation } from 'react-router-dom'
 
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
+
+import { useNavigate } from 'react-router-dom'
 
 
 import { useDispatch } from 'react-redux'
@@ -27,41 +29,57 @@ const ProductDetail = () => {
   const colors = ['Red', 'Black', 'Blue', 'Green', 'Pink', 'Orange', 'White']
   const sizes = ['XXXS', 'XXS', 'XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL']
 
+
+  const navigate = useNavigate()
+
   const location = useLocation()
 
   console.log("LOCATION VALUE PRODUCT ID :  ", location.state);
 
   const productId = location.state.productId
-  const productImage = location.state.productImage  //not needed
+  const productImage = location.state.productImage
   const productPrice = location.state.productPrice
 
   console.log("Product id and product img and product price : ", productId, productImage, productPrice);
+
+
+  const currentUser = useSelector(state => state.user.currentUser)
+
+  const isAdmin = useSelector(state => state.user.isAdmin)
+
+  const isLoading = useSelector(state => state.product.isLoading)
 
 
 
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(fetchProductDetail(productId))
+
+    if (currentUser !== null) {
+      isAdmin && navigate('/category') 
+
+    const res = dispatch(fetchProductDetail(productId))
+    console.log("RRRRRRR : ", res);
+
+    }
+    else {
+        navigate('/selectUserOrAdmin')
+    }
+
+
+
   }, [])
 
 
-  const productDetail = useSelector(state => state.product.productDetail.product_details)
+  // const productDetail = useSelector(state => state.product.productDetail.product_details)
   const wholeProduct = useSelector(state => state.product.productDetail)
+  const  productDetail = wholeProduct === null ? [] : wholeProduct.product_details 
+  
+  
 
+  console.log("Product details:UUUUUUU  ", productDetail, "whole product: ", wholeProduct);
 
-  console.log("Product details:UUUUUUU  ", productDetail);
-
-  const userId = useSelector(state => state.user.currentUser.userId)
-
-  const totalQuantity = useSelector(state => state.cart.cartCount)
-
-  const total = useSelector(state => state.cart.cartTotal)
-
-  const cartItems = useSelector(state => state.cart.cartItems)
-
-  console.log("CART ITEMS :  ", cartItems, "Total quntity : ", totalQuantity, "total : ", total);
-
+  const userId = currentUser === null ? "" : currentUser.userId 
 
   const addItemToCart = (productDetail) => {
     const productDetailId = productDetail.id
@@ -69,7 +87,7 @@ const ProductDetail = () => {
     const payload = {
       user: userId,
       product_detail: productDetailId,
-      quantity: totalQuantity
+
     }
 
 
@@ -97,28 +115,28 @@ const ProductDetail = () => {
   }
 
 
-const onColorChangeHandler = (e)=>{
-  const payload ={
-    color: e.target.value,
-    productId: productId,
-    size: null
+  const onColorChangeHandler = (e) => {
+    const payload = {
+      color: e.target.value,
+      productId: productId,
+      size: null
+    }
+    dispatch(searchProductDetail(payload))
+
+
+
+
   }
-dispatch(searchProductDetail(payload))
-  
 
+  const onSizeChangeHandler = (e) => {
+    const payload = {
+      size: e.target.value,
+      productId: productId,
+      color: null
+    }
+    dispatch(searchProductDetail(payload))
 
-
-}
-
-const onSizeChangeHandler = (e) =>{
-  const payload ={
-    size: e.target.value,
-    productId: productId,
-    color: null
   }
-dispatch(searchProductDetail(payload))
- 
-}
 
 
 
@@ -127,7 +145,9 @@ dispatch(searchProductDetail(payload))
 
 
   return (
+   
     <div>
+
       <h2>Details</h2>
 
       <select onChange={onColorChangeHandler}>
@@ -149,6 +169,7 @@ dispatch(searchProductDetail(payload))
           productDetail.map(product => (
             <div className='product-detail-container'>
               <img src={productImage} alt='product' />
+              <p>Price : ${productPrice}</p>
               <p>Available quantity : {product.available_quantity}</p>
               <p>Available size : {product.available_size}</p>
               <p>Available color : {product.available_color}</p>

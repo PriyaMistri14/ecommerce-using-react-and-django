@@ -3,8 +3,30 @@ import React from 'react'
 
 import { useNavigate } from 'react-router-dom'
 
+import { useSelector } from 'react-redux'
+
+import { useEffect } from 'react'
+
+
+
 const SelectUserOrAdmin = () => {
     const navigate = useNavigate()
+
+    const currentUser = useSelector(state => state.user.currentUser)
+
+    const isAdmin = useSelector(state => state.user.isAdmin)
+
+
+    useEffect(()=>{
+      
+      if(currentUser !== null){
+        console.log(" current user is not null !");
+        isAdmin ? navigate('/category') : navigate('/categoryUser')
+      }
+
+    
+
+    },[])
 
     const loginAsadmin = ()=>{
         navigate("/loginUser",{state:"admin"} )

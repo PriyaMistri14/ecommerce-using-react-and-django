@@ -27,20 +27,28 @@ const Category = () => {
     const navigate = useNavigate()
 
 
+    const currentUser = useSelector(state => state.user.currentUser)
+    const isAdmin = useSelector(state => state.user.isAdmin)
+    console.log("Current user in category component : ", currentUser, " is Admin : ", isAdmin);
+    
+
+
 
 
     useEffect(() => {
 
-        (async () => {
-            const res = await dispatch(fetchCategory())
-            console.log("Response in useeffect : ............", res.payload);
+        if(currentUser !== null){
+            isAdmin ? navigate('/category') : dispatch(fetchCategory())
+           
+          }
+          else{
+            navigate('/selectUserOrAdmin')
+          }
+        
+     
+    },[])
 
-        }
-
-        )()
-
-
-    }, [])
+    
 
     const categories = useSelector(state => state.category.categories)
     console.log("CATEEEE :  ", categories);

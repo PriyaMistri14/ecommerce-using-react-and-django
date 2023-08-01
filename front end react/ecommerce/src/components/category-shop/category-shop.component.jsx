@@ -8,7 +8,10 @@ import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 
 import { useLocation } from 'react-router-dom'
+
 import { useEffect } from 'react'
+
+import { useNavigate } from 'react-router-dom'
 
 import { fetchProductBasedOnCategory } from '../../store/category/categorySlice'
 
@@ -24,13 +27,28 @@ const CategoryShop = () => {
 const dispatch = useDispatch()
 const location = useLocation()
 
+const navigate = useNavigate()
+
 const categoryId = location.state.categoryId
 const categoryName = location.state.categoryName
 
 console.log("CATEGORY ID  :  ", categoryId);
 
+const currentUser = useSelector(state => state.user.currentUser)
+
+const isAdmin = useSelector(state => state.user.isAdmin)
+
+
 useEffect(()=>{
-    dispatch(fetchProductBasedOnCategory(categoryId))
+    if (currentUser !== null) {
+        isAdmin ? navigate('/category') : dispatch(fetchProductBasedOnCategory(categoryId))
+
+    }
+    else {
+        navigate('/selectUserOrAdmin')
+    }
+
+    
 }, [])
 
 

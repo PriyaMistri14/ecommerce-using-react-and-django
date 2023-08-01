@@ -44,6 +44,9 @@ import UserList from '../user/user-list.component';
 // ...........
 import CustomJwtTokenAuthProvider from './authProvider';
 
+import Login from '../login-form/login-form.component';
+
+
 const authProvider = jwtTokenAuthProvider()
 const dataProvider = drfProvider("http://localhost:8000/mysite", fetchJsonWithAuthJWTToken);
 
@@ -52,10 +55,12 @@ const customAuthProvider = CustomJwtTokenAuthProvider()
 
 
 
+
+
 const AdminPanel = () => {
     
   return (
-    <Admin dataProvider={dataProvider} authProvider={customAuthProvider} >
+    <Admin dataProvider={dataProvider} authProvider={customAuthProvider} loginPage={Login}  >
        <Resource name='category' list={CategoryList} create={CategoryCreate} edit={CategoryEdit} /> 
        <Resource name='product' list={ProductList} create={ProductCreate} edit={ProductEdit} />
        <Resource name='productDetail' list={ProductDetailList} create={ProductDetailCreate} edit={ProductDetailEdit} />

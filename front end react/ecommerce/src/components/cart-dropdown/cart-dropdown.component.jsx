@@ -35,12 +35,13 @@ const CartDropdown = () => {
                             <span>{cartItem.color}</span>
                             <span>{cartItem.size}</span>
                         </div>
-                        <button onClick={goToCheckOut}>Go to checkout</button>
-
+                      
                     </div>
                 )) :
                     "No cart item found!!"
             }
+              <button onClick={goToCheckOut}>Go to checkout</button>
+
 
         </div>
     )

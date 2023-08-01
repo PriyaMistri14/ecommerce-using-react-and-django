@@ -1,8 +1,13 @@
-import { AuthProvider, fetchUtils } from 'ra-core';
+import { fetchUtils } from 'ra-core';
 
 
 
-function customJwtTokenAuthProvider(options){
+
+
+
+
+function CustomJwtTokenAuthProvider(options){
+ 
   console.log("OPTION :--------------- ", options);
   const opts = {
     obtainAuthTokenUrl: 'http://127.0.0.1:8000/auth/login/',
@@ -20,7 +25,7 @@ function customJwtTokenAuthProvider(options){
         const responseJSON = await response.json();
         localStorage.setItem('access_token', responseJSON.access);
         localStorage.setItem('refresh_token', responseJSON.refresh);
-        return;
+        return {redirectTo: '/category'};
       }
       if (response.headers.get('content-type') !== 'application/json') {
         throw new Error(response.statusText);
@@ -72,4 +77,4 @@ export function fetchJsonWithAuthJWTToken(url, options) {
   );
 }
 
-export default customJwtTokenAuthProvider;
+export default CustomJwtTokenAuthProvider;
