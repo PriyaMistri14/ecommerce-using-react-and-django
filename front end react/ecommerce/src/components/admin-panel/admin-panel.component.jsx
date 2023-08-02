@@ -41,6 +41,14 @@ import UserEdit from '../user/user-edit.component';
 
 import UserList from '../user/user-list.component';
 
+import OrderCreate from '../order-detail/order-create.component';
+
+import OrderEdit from '../order-detail/order-edit.component';
+
+import OrderList from '../order-detail/order-list.component';
+
+
+
 // ...........
 import CustomJwtTokenAuthProvider from './authProvider';
 
@@ -67,6 +75,7 @@ const AdminPanel = () => {
        <Resource name='cartItem' list={CartItemList} create={CartItemCreate} edit={CartItemEdit} />
        <Resource name='review' list={ReviewList} create={ReviewCreate} edit={ReviewEdit} />
        <Resource name='user' list={UserList} create={UserCreate} edit={UserEdit} />
+       <Resource name='order' list={OrderList} create={OrderCreate} edit={OrderEdit} />
 
 
     </Admin>

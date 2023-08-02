@@ -48,8 +48,9 @@ class Product(models.Model):
 
 class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='orders')
-    product = models.ForeignKey('Product', on_delete=models.CASCADE, related_name='orders')
+    product_detail = models.ForeignKey('ProductDetail', on_delete=models.CASCADE, default=0, related_name='orders')
     quantity = models.IntegerField(default=1)
+    status = models.CharField(max_length=50, default='Pending')  #Pending, Success, Cancelled
     created_at = models.DateTimeField(default=now)              # called only first time obj is created
     updated_at = models.DateTimeField(auto_now = True)                # callted every time obj is saved (updated)
 

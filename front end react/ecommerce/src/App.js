@@ -40,6 +40,11 @@ import CategoryList from './components/category/category-list.component';
 
 import Logout from './components/logout/logout.component';
 
+import OrderDetail from './components/order-detail/order-detail.component';
+
+import '@stripe/stripe-js'
+
+
 
 // ..............
 
@@ -47,6 +52,7 @@ import drfProvider, { jwtTokenAuthProvider, fetchJsonWithAuthJWTToken } from 'ra
 import CategoryCreate from './components/category/category-create.component';
 import CategoryEdit from './components/category/category-edit.component';
 import Checkout from './components/checkout/checkout.component';
+import Success from './components/success/success.component';
 
 const authProvider = jwtTokenAuthProvider()
 const dataProvider = drfProvider("http://localhost:8000/mysite", fetchJsonWithAuthJWTToken);
@@ -108,7 +114,7 @@ function App() {
               {/* <Link to='/adminPanel'>Admin</Link> */}
               <Link to='/categoryUser'>Category</Link>
               <Link to='/shop'>Shop Now</Link>
-
+              <Link to='/orderDetails'>See Orders</Link>
               {
                 isCartOpen && <CartDropdown />
               }
@@ -132,6 +138,8 @@ function App() {
           <Route path='/productDetailUser' element={<ProductDetail />} />
           <Route path='/categoryShop' element={<CategoryShop />} />
           <Route path='/checkout' element={<Checkout />} />
+          <Route path='/orderDetails' element={<OrderDetail />} />
+          <Route path='/success/:orderId' element={<Success />} />
 
           {/* <Route path='/api/token/' element= {<AdminPanel />} /> */}
           {/* <Route path='/adminPanel' element={<AdminPanel />}/> */}

@@ -1,0 +1,27 @@
+.order-detail-item-container img{
+    width: 55px;
+    height: 55px;
+    padding-left: 45px;
+    
+}
+.order-detail-item-container span{
+
+    padding-left: 45px;
+
+}
+.order-detail-item-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 30px;
+   
+}
+.table-container img{
+    width: 55px;
+    height: 55px;
+
+}
+
+
+
+

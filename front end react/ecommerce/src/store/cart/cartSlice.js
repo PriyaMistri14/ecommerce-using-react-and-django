@@ -141,6 +141,34 @@ export const clearCartItem = createAsyncThunk('/clearCartItem', async (payload) 
 
 
 
+export const clearCartItemAfterOrder = createAsyncThunk('/clearCartItemAfterOrder', async (payload)=>{
+    const result = await axiosGET('mysite/cartItem/')
+    const allData = result.data
+    const newData = allData.filter(data => data.product_detail == payload.productDetailId)
+
+    const quantity = payload.quantity
+
+
+    if (newData.length != 0) {
+        const res = await axiosDELETE(`mysite/cartItem/${newData[0].id}/`)
+    }
+
+    const data = {
+        productDetailId: payload.productDetailId,
+        price: payload.price,
+        quantity: quantity
+    }
+
+    return data
+
+
+
+
+})
+
+
+
+
 
 
 
@@ -156,12 +184,14 @@ const cartSlice = createSlice({
         isCartOpen: false,
         cartTotal: 0,
         cartCount: 0,
-        cartItems: []
+        cartItems: [],
+        
     },
     reducers: {
         setIsCartOpen: (state, action) => {
             state.isCartOpen = !state.isCartOpen
-        }
+        },
+      
     },
 
     extraReducers(builder) {
@@ -224,13 +254,26 @@ const cartSlice = createSlice({
 
             })
 
+            .addCase(clearCartItemAfterOrder.fulfilled, (state, action) => {
+                const { quantity, productDetailId, price } = action.payload
+                console.log("...................................................", quantity, productDetailId, price);
+                const newItems = state.cartItems.filter((item) => item.productDetailId != productDetailId)
+
+                state.cartItems = newItems
+
+                state.cartCount = state.cartCount - quantity
+                state.cartTotal = state.cartTotal - (quantity * price)
+
+
+            })
+
 
 
     }
 })
 
 
-export const { setIsCartOpen } = cartSlice.actions
+export const { setIsCartOpen} = cartSlice.actions
 
 export default cartSlice.reducer
 

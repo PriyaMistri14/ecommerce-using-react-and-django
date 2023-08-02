@@ -29,6 +29,9 @@ import productReducer from './product/productSlice'
 import cartReducer from './cart/cartSlice'
 
 
+import orderReducer from './order/orderSlice'
+
+
 
 
 
@@ -36,7 +39,8 @@ const rootReducer = combineReducers({
     user: userReducer,
     category: categoryReducer,
     product: productReducer,
-    cart: cartReducer
+    cart: cartReducer,
+    order: orderReducer
 })
 
 

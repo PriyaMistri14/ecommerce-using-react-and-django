@@ -14,13 +14,25 @@ import { clearCartItem } from '../../store/cart/cartSlice'
 import { useSelector } from 'react-redux'
 
 
+import { orderItem } from '../../store/order/orderSlice'
+
+
+import { clearCartItemAfterOrder } from '../../store/cart/cartSlice'
+
+
+
+
 
 const CheckoutItem = (props) => {
     const { product } = props
 
-    const wholeProduct = useSelector(state => state.product.productDetail) 
-    
+    const wholeProduct = useSelector(state => state.product.productDetail)
+
     const currentUser = useSelector(state => state.user.currentUser)
+
+    const orderedProduct = useSelector(state => state.order)
+    console.log("Ordered products : ", orderedProduct);
+
 
     const userId = currentUser === null ? "" : currentUser.userId
     const productDetail =
@@ -28,18 +40,18 @@ const CheckoutItem = (props) => {
         id: product.productDetailId,
         available_quantity: product.available_quantity,
         available_color: product.color,
-        available_size : product.size
+        available_size: product.size
 
-    } 
-    
+    }
+
 
     const dispatch = useDispatch()
 
     const payload = {
         user: userId,
         product_detail: product.productDetailId,
-  
-      }
+
+    }
 
 
     const item = {
@@ -51,11 +63,11 @@ const CheckoutItem = (props) => {
         payload,
         item
     }
-    console.log("checkout item component : data" , data);
+    console.log("checkout item component : data", data);
 
     const addProductToCartHandler = () => {
         const res = dispatch(updateCartItem(data))
-        console.log("res in add to cart in checkout page : " , res);
+        console.log("res in add to cart in checkout page : ", res);
     }
 
 
@@ -65,9 +77,53 @@ const CheckoutItem = (props) => {
 
     }
 
-    const clearItemFromCartHandler = ()=>{
-      dispatch(clearCartItem(product))
+    const clearItemFromCartHandler = () => {       
+        dispatch(clearCartItem(product))
     }
+
+
+    const orderProduct = () => {
+
+        const payload = {
+            product_detail: product.productDetailId,
+            user: userId,
+            quantity: product.quantity
+        }
+
+        const otherDetails ={
+            productId:product.productId,
+            productDetailId: product.productDetailId,
+            quantity:product.quantity,
+            price:product.price,
+            image:product.image,
+            name:product.name,
+            color:product.color,
+            size: product.size,
+            available_quantity:product.available_quantity
+    
+        }
+
+
+        const data ={
+           payload: payload,
+           otherDetails: otherDetails
+        }
+        console.log("payload to order : ", payload);
+
+       const res = dispatch(orderItem(data))
+       console.log("RRRRREEEE: ", res);
+       dispatch(clearCartItemAfterOrder(product))
+       alert("successfully ordered!!!")
+
+       
+
+    }
+
+
+
+
+
+
 
 
     return (
@@ -91,6 +147,8 @@ const CheckoutItem = (props) => {
             <span>{product.size}</span>
 
             <div className='remove-button' onClick={clearItemFromCartHandler}>&#10005;</div>
+
+            <span onClick={orderProduct}>Order Now</span>
 
 
 

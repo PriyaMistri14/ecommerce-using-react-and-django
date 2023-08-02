@@ -55,6 +55,7 @@ const Checkout = () => {
         <span>Color</span>
         <span>Size</span>
         <span>Clear Item</span>
+        <span>Order Now</span>
         {
         
         cartItems.map((cartItem)=><CheckoutItem product={cartItem}/>)
