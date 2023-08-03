@@ -4,9 +4,9 @@ from rest_framework import viewsets
 
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
-from .serializers import CategorySerializer, ProductSerializer, OrderSerializer, ProductDetailSerializer, ReviewSerializer, DiscountSerializer, CartItemSerializer, PaymentSerializer, DeliverySerializer, ProductAllSerializer, UserSerializer
+from .serializers import CategorySerializer, ProductSerializer, OrderSerializer, ProductDetailSerializer, ReviewSerializer, DiscountSerializer, CartItemSerializer, PaymentSerializer, DeliverySerializer, ProductAllSerializer, UserSerializer, CouponSerializer
 
-from .models import Category, Product, Order,ProductDetail, Review, Discount, Delivery, CartItem, Payment
+from .models import Category, Product, Order,ProductDetail, Review, Discount, Delivery, CartItem, Payment, Coupon
 
 from rest_framework.views import APIView
 
@@ -189,6 +189,23 @@ class CartItemViewset(viewsets.ModelViewSet):
 
     def get_queryset(self):
         queryset = CartItem.objects.all()
+        order = self.request.query_params.get("ordering")
+        print("ORDERRRRR ?????????????????????????? ", order)
+        if order is not None:
+            queryset = queryset.order_by(order)
+        return queryset
+
+
+
+
+class CouponViewset(viewsets.ModelViewSet):   
+    authentication_classes= [JWTAuthentication]
+    queryset = Coupon.objects.all()
+    serializer_class = CouponSerializer
+    pagination_class = PageNumberWithPageSizePagination
+
+    def get_queryset(self):
+        queryset = Coupon.objects.all()
         order = self.request.query_params.get("ordering")
         print("ORDERRRRR ?????????????????????????? ", order)
         if order is not None:

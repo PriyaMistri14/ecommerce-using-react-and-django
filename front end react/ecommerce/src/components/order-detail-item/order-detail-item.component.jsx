@@ -7,7 +7,11 @@ import { loadStripe } from '@stripe/stripe-js'
 
 import { useDispatch } from 'react-redux'
 
-import { changeOrderStatus } from '../../store/order/orderSlice'
+import { changeOrderStatus, removeCoupon } from '../../store/order/orderSlice'
+
+import { useState } from 'react'
+
+import { applyCoupon } from '../../store/order/orderSlice'
 
 
 
@@ -30,6 +34,9 @@ const getStripe = () => {
 
 
 const OrderDetailItem = (props) => {
+
+
+    const [couponCode, setCouponCode] = useState("")
 
 
     const dispatch = useDispatch()
@@ -69,10 +76,27 @@ const OrderDetailItem = (props) => {
 
 
 
+    const applyCouponToOrder = () => {
+   
+         const res = dispatch(applyCoupon({couponCode: couponCode, orderId: item.orderId, total: item.totalAmount}))
+
+       console.log("Response of apply coupon");
+
+    }
+
+
+
+
+    const removeCouponFromOrder = () =>{
+        const res = dispatch(removeCoupon({couponCode: item.coupon, orderId: item.orderId, total: item.totalAmount}))
+    }
+
+
+
 
 
     return (
-        <div className='order-detail-item-container'>
+        <div className='order-item'>
             {/* <table border='1px' className='table-container'>
                 <tr>
                     <td>{item.name}</td>
@@ -103,13 +127,30 @@ const OrderDetailItem = (props) => {
             <span>{item.size}</span>
             <span>{item.orderStatus}</span>
             <span>{item.date}</span>
-            <span>{item.price * item.quantity}</span>
+            <span>${item.totalAmount}</span>
             {
-                item.orderStatus !== 'Cancelled' && <span onClick={cancelOrder}>Cancel Order</span>
+                item.coupon ? <span onClick={removeCouponFromOrder} className='apply-btn'>{item.coupon}</span> :
+                    <div className='coupon-container'>
+                        <input type='text' name='coupon' onChange={(e) => setCouponCode(e.target.value)} placeholder='Enter Coupon code to apply' />
+                        <span onClick={applyCouponToOrder} className='apply-btn'>Apply</span>
+                    </div>
+
+
+
+            }
+
+
+
+            {/* <div className='coupon-container'>
+                <input type='text' name='coupon' onChange={(e) => setCouponCode(e.target.value)} />
+                <span onClick={applyCoupon}>APPLY</span>
+            </div> */}
+            {
+                item.orderStatus !== 'Cancelled' && <span onClick={cancelOrder} className='apply-btn'>Cancel Order</span>
             }
 
             {
-                item.orderStatus === 'Pending' && <span onClick={redirectToCheckout}>Pay Now</span>
+                item.orderStatus === 'Pending' && <span onClick={redirectToCheckout} className='apply-btn'>Pay Now</span>
             }
 
 

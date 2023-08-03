@@ -56,14 +56,14 @@ const ProductDetail = () => {
   useEffect(() => {
 
     if (currentUser !== null) {
-      isAdmin && navigate('/category') 
+      isAdmin && navigate('/category')
 
-    const res = dispatch(fetchProductDetail(productId))
-    console.log("RRRRRRR : ", res);
+      const res = dispatch(fetchProductDetail(productId))
+      console.log("RRRRRRR : ", res);
 
     }
     else {
-        navigate('/selectUserOrAdmin')
+      navigate('/selectUserOrAdmin')
     }
 
 
@@ -73,13 +73,13 @@ const ProductDetail = () => {
 
   // const productDetail = useSelector(state => state.product.productDetail.product_details)
   const wholeProduct = useSelector(state => state.product.productDetail)
-  const  productDetail = wholeProduct === null ? [] : wholeProduct.product_details 
-  
-  
+  const productDetail = wholeProduct === null ? [] : wholeProduct.product_details
+
+
 
   console.log("Product details:UUUUUUU  ", productDetail, "whole product: ", wholeProduct);
 
-  const userId = currentUser === null ? "" : currentUser.userId 
+  const userId = currentUser === null ? "" : currentUser.userId
 
   const addItemToCart = (productDetail) => {
     const productDetailId = productDetail.id
@@ -100,7 +100,7 @@ const ProductDetail = () => {
       payload,
       item
     }
-
+    console.log("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<", data.item.productDetail.available_quantity);
     console.log("PAYLOADDDD :  ", payload, "Product Detailllllll : ", productDetail, "itemmm : ", item);
 
     if (productDetail.available_quantity == 0) {
@@ -145,12 +145,12 @@ const ProductDetail = () => {
 
 
   return (
-   
+
     <div>
 
       <h2>Details</h2>
 
-      <select onChange={onColorChangeHandler}>
+      <select onChange={onColorChangeHandler} className='color-select'>
         <option selected value="" >Search by Color</option>
         {
           colors.map(color => <option value={color}>{color}</option>)
@@ -163,23 +163,45 @@ const ProductDetail = () => {
           sizes.map(size => <option value={size}>{size}</option>)
         }
       </select>
+      <br />
+      <br />
+
+      <img src={productImage} alt='product' />
+      <p>Price : ${productPrice}</p>
+
+      <div className='product-detail-main-container'>
+        {
+          productDetail && productDetail.length != 0 ?
+            productDetail.map(product => (
+              <div className='product-detail-container'>
+
+                <p>Available quantity : {product.available_quantity}</p>
+                <p>Available size : {product.available_size}</p>
+
+                <p>Available color : {product.available_color}</p>
+                <p className='add-to-cart' onClick={() => addItemToCart(product)}>Add to Cart</p>
+
+              </div>
+            )
+
+            )
+            : "No Details found for given product!!"
+        }
+
+      </div>
+      <p>Available Items:</p>
+      <p>Please select any radio button to add that product to cart !!</p>
 
       {
-        productDetail && productDetail.length != 0 ?
-          productDetail.map(product => (
-            <div className='product-detail-container'>
-              <img src={productImage} alt='product' />
-              <p>Price : ${productPrice}</p>
-              <p>Available quantity : {product.available_quantity}</p>
-              <p>Available size : {product.available_size}</p>
-              <p>Available color : {product.available_color}</p>
-              <p className='add-to-cart' onClick={() => addItemToCart(product)}>Add to Cart</p>
+        productDetail && productDetail.length != 0 ? productDetail.map(product =>
+          <div>
+            <input type='radio' name='color' value={product} onClick={() => addItemToCart(product)} />
+            <label><strong>Color : </strong>{product.available_color}</label>
+            <label><strong> Size : </strong> {product.available_size}</label>
+            <label><strong> Quantity : </strong>{product.available_quantity}</label>
+          </div>) :
+          "No details found for given product!!"
 
-            </div>
-          )
-
-          )
-          : "No Details found for given product!!"
       }
 
     </div>

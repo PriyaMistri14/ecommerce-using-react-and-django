@@ -4,9 +4,14 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { axiosGET, axiosPOST } from "../../axiosApi";
 
 
-export const fetchProduct = createAsyncThunk('/product', async()=>{
-    const res = await axiosGET("mysite/product/")
-    return res.data
+export const fetchProduct = createAsyncThunk('/product', async(payload)=>{
+    const res = await axiosGET(`mysite/product/?ordering=${payload.ordering}&page=${payload.page}&page_size=${payload.page_size}`)
+    console.log("TTTT: ", res, ";;;", res.data);
+    const data = {
+        results : res.data.results,
+        totalPages : Math.ceil(res.data.count / payload.page_size)
+    }
+    return data
 })
 
 
@@ -50,7 +55,8 @@ const productSlice = createSlice({
         products: null,
         isLoading: false,
         error : null,
-        productDetail : null
+        productDetail : null,
+        totalPages:1
     },
     reducers:{},
     extraReducers(builder){
@@ -61,7 +67,8 @@ const productSlice = createSlice({
 
         .addCase(fetchProduct.fulfilled, (state, action)=>{
             state.isLoading = false
-            state.products = action.payload
+            state.products = action.payload.results
+            state.totalPages = action.payload.totalPages
         })
 
         .addCase(fetchProduct.rejected, (state, action)=>{

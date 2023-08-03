@@ -1,7 +1,7 @@
 
 from django.urls import path,include
 
-from .views import CategoryViewset, ProductViewset, OrderViewset,  ProductDetailViewset, DiscountViewset, DeliveryViewset, PaymentViewset, CartItemViewset, ReviewViewset, IsSuperUser, ProductAllViewset, SearchProduct, SearchProductDetail, UserViewset
+from .views import CategoryViewset, ProductViewset, OrderViewset,  ProductDetailViewset, DiscountViewset, DeliveryViewset, PaymentViewset, CartItemViewset, ReviewViewset, IsSuperUser, ProductAllViewset, SearchProduct, SearchProductDetail, UserViewset, CouponViewset
 
 from rest_framework import routers
 
@@ -18,6 +18,7 @@ router.register("review", ReviewViewset, basename="review")
 router.register("cartItem", CartItemViewset, basename="cartItem")
 router.register("productAll", ProductAllViewset, basename="productAll")
 router.register("user", UserViewset,  basename="user")
+router.register("coupon", CouponViewset,  basename="coupon")
 
 
 

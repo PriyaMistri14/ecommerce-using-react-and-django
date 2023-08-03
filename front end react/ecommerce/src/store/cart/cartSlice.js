@@ -3,7 +3,12 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { axiosDELETE, axiosGET, axiosPATCH, axiosPOST, axiosPUT } from "../../axiosApi";
 
 
-export const updateCartItem = createAsyncThunk('/updateCartItem', async (payload) => {
+import { fetchProductDetail } from "../product/productSlice";
+
+
+
+
+export const updateCartItem = createAsyncThunk('/updateCartItem', async (payload,{dispatch}) => {
     try {
         const result = await axiosGET('mysite/cartItem/')
         const allData = result.data
@@ -29,12 +34,15 @@ export const updateCartItem = createAsyncThunk('/updateCartItem', async (payload
             const res = await axiosPOST(`mysite/cartItem/`, { user: payload.payload.user, product_detail: payload.payload.product_detail, quantity: 1 })
 
         }
+       
 
-
+        console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>QUANTITYYY : ", payload.item.productDetail.available_quantity);
 
         const res = await axiosPATCH(`mysite/productDetail/${payload.item.productDetail.id}/`, { available_quantity: payload.item.productDetail.available_quantity - 1 })
 
         console.log("AFTER updateting available quantity :  ", res);
+
+        await dispatch(fetchProductDetail(payload.item.wholeProduct.id))
 
         const data = {
             productId: payload.item.wholeProduct.id,
@@ -78,7 +86,7 @@ export const removeCartItem = createAsyncThunk('/removeCartItem', async (payload
     const available_quantity = resProductDetail.available_quantity + 1
     console.log("avalable quantiry", available_quantity);
 
-    const res = await axiosPATCH(`mysite/productDetail/${payload.productDetailId}/`, { available_quantity: available_quantity  })
+    const res = await axiosPATCH(`mysite/productDetail/${payload.productDetailId}/`, { available_quantity: available_quantity })
 
     console.log("AFTER updateting available quantity :  ", res);
 
@@ -119,7 +127,7 @@ export const clearCartItem = createAsyncThunk('/clearCartItem', async (payload) 
     const available_quantity = resProductDetail.available_quantity + quantity
     console.log("avalable quantiry", available_quantity);
 
-    const res = await axiosPATCH(`mysite/productDetail/${payload.productDetailId}/`, { available_quantity: available_quantity  })
+    const res = await axiosPATCH(`mysite/productDetail/${payload.productDetailId}/`, { available_quantity: available_quantity })
 
     console.log("AFTER updateting available quantity :  ", res);
 
@@ -141,7 +149,7 @@ export const clearCartItem = createAsyncThunk('/clearCartItem', async (payload) 
 
 
 
-export const clearCartItemAfterOrder = createAsyncThunk('/clearCartItemAfterOrder', async (payload)=>{
+export const clearCartItemAfterOrder = createAsyncThunk('/clearCartItemAfterOrder', async (payload) => {
     const result = await axiosGET('mysite/cartItem/')
     const allData = result.data
     const newData = allData.filter(data => data.product_detail == payload.productDetailId)
@@ -185,24 +193,33 @@ const cartSlice = createSlice({
         cartTotal: 0,
         cartCount: 0,
         cartItems: [],
-        
+
     },
     reducers: {
         setIsCartOpen: (state, action) => {
             state.isCartOpen = !state.isCartOpen
         },
-      
+
     },
 
     extraReducers(builder) {
         builder
             .addCase(updateCartItem.fulfilled, (state, action) => {
-                const { productDetailId, quantity, price } = action.payload
+                const { productDetailId, quantity, price, available_quantity } = action.payload
                 const isAlreadyExist = state.cartItems.filter((item) => item.productDetailId == productDetailId)
 
                 if (isAlreadyExist.length != 0) {
                     console.log("Already exist !!");
-                    state.cartItems.map((item) => item.productDetailId == productDetailId ? item.quantity = quantity : item.quantity = item.quantity)
+                    state.cartItems.map((item) =>
+                    {
+                        if(item.productDetailId == productDetailId)
+                        {
+                            item.quantity = quantity
+                            item.available_quantity = available_quantity - 1
+                        }
+                    })
+                    
+                    // item.productDetailId == productDetailId ? item.quantity = quantity : item.quantity = item.quantity)
 
                 }
                 else {
@@ -220,7 +237,7 @@ const cartSlice = createSlice({
 
             .addCase(removeCartItem.fulfilled, (state, action) => {
                 const { quantity, productDetailId, price } = action.payload
-                
+
                 if (quantity > 0) {
 
                     state.cartItems.map((item) => item.productDetailId == productDetailId ? item.quantity = quantity : item.quantity = item.quantity)
@@ -273,7 +290,7 @@ const cartSlice = createSlice({
 })
 
 
-export const { setIsCartOpen} = cartSlice.actions
+export const { setIsCartOpen } = cartSlice.actions
 
 export default cartSlice.reducer
 

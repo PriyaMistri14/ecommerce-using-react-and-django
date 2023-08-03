@@ -27,6 +27,13 @@ const CheckoutItem = (props) => {
     const { product } = props
 
     const wholeProduct = useSelector(state => state.product.productDetail)
+    // ............................................
+
+
+   console.log("OOOOOOOOOOOOO productDetailDemo:", product.available_quantity);
+
+
+    // ..................................................
 
     const currentUser = useSelector(state => state.user.currentUser)
 
@@ -66,8 +73,15 @@ const CheckoutItem = (props) => {
     console.log("checkout item component : data", data);
 
     const addProductToCartHandler = () => {
-        const res = dispatch(updateCartItem(data))
-        console.log("res in add to cart in checkout page : ", res);
+        if(product.available_quantity == 0)
+        {
+            alert("No more quantity available !!!")
+        }
+        else{
+
+            const res = dispatch(updateCartItem(data))
+            console.log("res in add to cart in checkout page : ", res);
+        }
     }
 
 
@@ -87,7 +101,8 @@ const CheckoutItem = (props) => {
         const payload = {
             product_detail: product.productDetailId,
             user: userId,
-            quantity: product.quantity
+            quantity: product.quantity,
+            total_amount :  product.price * product.quantity
         }
 
         const otherDetails ={

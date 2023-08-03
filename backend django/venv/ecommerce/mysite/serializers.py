@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Category, Product, Order,ProductDetail, Discount, Review, Delivery, Payment, CartItem
+from .models import Category, Product, Order,ProductDetail, Discount, Review, Delivery, Payment, CartItem, Coupon
 
 from django.contrib.auth import get_user_model
 
@@ -82,6 +82,13 @@ class ProductAllSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
+        fields = '__all__'
+
+
+
+class CouponSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Coupon
         fields = '__all__'
 
 

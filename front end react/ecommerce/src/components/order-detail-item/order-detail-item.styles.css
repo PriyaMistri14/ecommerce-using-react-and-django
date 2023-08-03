@@ -1,26 +1,74 @@
 .order-detail-item-container img{
     width: 55px;
     height: 55px;
-    padding-left: 45px;
+    /* padding-left: 45px; */
     
 }
 .order-detail-item-container span{
 
-    padding-left: 45px;
+    /* padding-left: 45px; */
 
 }
 .order-detail-item-container{
     display: flex;
-    flex-direction: row;
-    justify-content: center;
+    flex-direction: column;
+    justify-content: space-around;
     margin-top: 30px;
    
 }
+
+.order-detail-item-container span{
+    padding-left: 20px;
+}
+.order-detail-item-container img{
+    padding-left: 20px;
+}
+
+
+.order-detail-item-container div {
+   margin-top: 20px;
+}
+
 .table-container img{
     width: 55px;
     height: 55px;
 
 }
+
+
+
+.coupon-container{
+    display:inline;
+    padding-left: 20px;
+}
+
+.coupon-container span{
+    padding-left: 0px;
+}
+
+
+.order-item:hover
+{
+    background-color: rgb(219, 245, 209)
+    
+}
+
+.order-item{
+    padding: 15px;
+}
+
+
+.apply-btn{
+    color: blue;
+ 
+}
+
+.apply-btn:hover{
+    color: red;
+}
+
+
+
 
 
 

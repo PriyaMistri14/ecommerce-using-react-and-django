@@ -47,6 +47,13 @@ import OrderEdit from '../order-detail/order-edit.component';
 
 import OrderList from '../order-detail/order-list.component';
 
+import CouponCreate from '../coupon/coupon-create.component';
+
+import CouponEdit from '../coupon/coupon-edit.component';
+
+import CouponList from '../coupon/coupon-list.component';
+
+
 
 
 // ...........
@@ -76,6 +83,7 @@ const AdminPanel = () => {
        <Resource name='review' list={ReviewList} create={ReviewCreate} edit={ReviewEdit} />
        <Resource name='user' list={UserList} create={UserCreate} edit={UserEdit} />
        <Resource name='order' list={OrderList} create={OrderCreate} edit={OrderEdit} />
+       <Resource name='coupon' list={CouponList} create={CouponCreate} edit={CouponEdit} />
 
 
     </Admin>

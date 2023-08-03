@@ -31,41 +31,49 @@ const OrderDetail = () => {
     const isAdmin = useSelector(state => state.user.isAdmin)
 
 
-useEffect(()=>{
+    useEffect(() => {
 
-    if (currentUser !== null) {
-        isAdmin && navigate('/category') 
+        if (currentUser !== null) {
+            isAdmin && navigate('/category')
 
-    }
-    else {
-        navigate('/selectUserOrAdmin')
-    }
-
-
-
-
-
-},[])
-
-
-
-  return (
-    <div className='order-detail-container'>
-        <span>Name</span>
-        <span>Image</span>
-        <span>Price</span>
-        <span>Quantity</span>
-        <span>Color</span>
-        <span>Size</span>
-        <span>Status</span>
-        <span>Date</span>
-        <span>Total</span>
-        {
-            orderedItems && orderedItems.map((orderedItem)=><OrderDetailItem item={orderedItem}/>)
         }
-      
-    </div>
-  )
+        else {
+            navigate('/selectUserOrAdmin')
+        }
+
+
+
+
+
+    }, [])
+
+
+
+    return (
+        <div className='order-detail-container'>
+            <div className='order-detail'><span>Name</span>
+                <span>Image</span>
+                <span>Price</span>
+                <span>Quantity</span>
+                <span>Color</span>
+                <span>Size</span>
+                <span>Status</span>
+                <span>Date</span>
+                <span>Total</span>
+                <span>Apply Coupon</span>
+                <span>Cancel Order</span>
+                <span>Pay Now</span>
+            </div>
+            <div className='order-detail-item-container'>
+          
+                {
+                    orderedItems && orderedItems.map((orderedItem) => <OrderDetailItem item={orderedItem} />)
+                }
+          
+
+        </div>
+        </div>
+    )
 }
 
 export default OrderDetail
