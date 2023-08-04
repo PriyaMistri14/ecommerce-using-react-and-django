@@ -13,6 +13,8 @@ import { useState } from 'react'
 
 import { applyCoupon } from '../../store/order/orderSlice'
 
+import { useNavigate } from 'react-router-dom'
+
 
 
 
@@ -40,6 +42,8 @@ const OrderDetailItem = (props) => {
 
 
     const dispatch = useDispatch()
+
+    const navigate = useNavigate()
 
 
     const { item } = props
@@ -77,18 +81,18 @@ const OrderDetailItem = (props) => {
 
 
     const applyCouponToOrder = () => {
-   
-         const res = dispatch(applyCoupon({couponCode: couponCode, orderId: item.orderId, total: item.totalAmount}))
 
-       console.log("Response of apply coupon");
+        const res = dispatch(applyCoupon({ couponCode: couponCode, orderId: item.orderId, total: item.totalAmount }))
+
+        console.log("Response of apply coupon");
 
     }
 
 
 
 
-    const removeCouponFromOrder = () =>{
-        const res = dispatch(removeCoupon({couponCode: item.coupon, orderId: item.orderId, total: item.totalAmount}))
+    const removeCouponFromOrder = () => {
+        const res = dispatch(removeCoupon({ couponCode: item.coupon, orderId: item.orderId, total: item.totalAmount }))
     }
 
 
@@ -153,6 +157,7 @@ const OrderDetailItem = (props) => {
                 item.orderStatus === 'Pending' && <span onClick={redirectToCheckout} className='apply-btn'>Pay Now</span>
             }
 
+            <span onClick={() => navigate('/giveReview', { state: item.productId })} className='apply-btn'> Give Review</span>
 
         </div>
     )

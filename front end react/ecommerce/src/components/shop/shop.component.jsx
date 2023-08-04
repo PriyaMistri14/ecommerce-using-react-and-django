@@ -31,15 +31,25 @@ const Shop = () => {
     const isAdmin = useSelector(state => state.user.isAdmin)
 
     const [currentPage, setCurrentPage] = useState(1)
+    const [pageSize, setPageSize] = useState(5)
+    const [order, setOrder] = useState('id')
+
+    // const payload = {
+    //     ordering: order,
+    //     page: currentPage,
+    //     page_size: pageSize
+
+    // }
 
     useEffect(() => {
         if (currentUser !== null) {
             const payload = {
-                ordering: '-id',
-                page: 1,
-                page_size: 5
+                ordering: order,
+                page: currentPage,
+                page_size: pageSize
 
             }
+            console.log("pagesize in useEffect : ", pageSize);
             isAdmin ? navigate('/category') : dispatch(fetchProduct(payload))
 
         }
@@ -69,6 +79,24 @@ const Shop = () => {
     }
 
 
+    const onPageChangeHandler = (pageNo) => {
+        setCurrentPage(pageNo)
+        const payload = {
+            ordering: order,
+            page: pageNo,
+            page_size: pageSize
+
+        }
+        dispatch(fetchProduct(payload))
+
+
+
+    }
+
+
+
+
+
 
 
     return (
@@ -76,13 +104,23 @@ const Shop = () => {
             <h2>Shop Now</h2>
             <input type='search' placeholder='Search Here' onChange={onChangeHandler} />
 
+            <div className='product-container'>
+
+                {
+                    products && products.map(product => <ProductCard product={product} />)
+                }
+            </div>
             {
-                products && products.map(product => <ProductCard product={product} />)
+                currentPage != 1 && <span onClick={() => onPageChangeHandler(currentPage - 1)}>Prev</span>
             }
-
             {
-                arr && arr.length != 0 && arr.map(ele => ele == currentPage ?  <a onClick={()=>alert(ele)} style={{color:"red"}}>{ele}</a> :<a style={{color:"blue"}}>{ele}</a>)
+                arr && arr.length != 0 && arr.map(ele => ele == currentPage ?
+                    <a onClick={() => onPageChangeHandler(ele)} style={{ color: "red" }}>{ele}</a> :
+                    <a onClick={() => onPageChangeHandler(ele)} style={{ color: "blue" }}>{ele}</a>)
 
+            }
+            {
+                currentPage != arr.length && <span onClick={() => onPageChangeHandler(currentPage + 1)} >Next</span>
             }
 
         </div>

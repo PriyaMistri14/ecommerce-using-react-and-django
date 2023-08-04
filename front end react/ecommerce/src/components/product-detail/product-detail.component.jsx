@@ -21,6 +21,10 @@ import { updateCartItem } from '../../store/cart/cartSlice'
 import { searchProductDetail } from '../../store/product/productSlice'
 
 
+import { setIsReviewCartOpen } from '../../store/review/reviewSlice'
+import Review from '../review/review.component'
+
+
 
 
 const ProductDetail = () => {
@@ -49,6 +53,8 @@ const ProductDetail = () => {
 
   const isLoading = useSelector(state => state.product.isLoading)
 
+
+const isReviewCartOpen = useSelector(state => state.review.isReviewCartOpen)
 
 
   const dispatch = useDispatch()
@@ -139,8 +145,15 @@ const ProductDetail = () => {
   }
 
 
+  const setReviewCart = ()=>{
+    dispatch(setIsReviewCartOpen())
+  }
 
 
+
+
+
+console.log("isReviewCartOpen : ", isReviewCartOpen);
 
 
 
@@ -203,6 +216,19 @@ const ProductDetail = () => {
           "No details found for given product!!"
 
       }
+
+<br />
+<br />
+      <div className='review-container'>
+        {
+          isReviewCartOpen ? <span onClick={setReviewCart}>Cancle</span> : <span onClick={setReviewCart}>See review</span>
+        }
+
+        {
+          isReviewCartOpen && <Review productId={productId}/>
+        }
+
+      </div>
 
     </div>
   )

@@ -32,6 +32,9 @@ import cartReducer from './cart/cartSlice'
 import orderReducer from './order/orderSlice'
 
 
+import reviewReducer from './review/reviewSlice'
+
+
 
 
 
@@ -40,7 +43,8 @@ const rootReducer = combineReducers({
     category: categoryReducer,
     product: productReducer,
     cart: cartReducer,
-    order: orderReducer
+    order: orderReducer,
+    review:reviewReducer
 })
 
 

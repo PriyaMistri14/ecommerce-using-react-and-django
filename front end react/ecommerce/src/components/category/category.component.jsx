@@ -56,20 +56,22 @@ const Category = () => {
     return (
         <div>
             <h2>Category</h2>
+            <div className='category-main-container'>
             {
                 categories && categories.map(category => (
-                    <div className='category-container'>
-                        <h4 onClick={() => navigate('/categoryShop', {
-                            state: {
-                                categoryId: category.id,
-                                categoryName: category.name
-                            }
-                        })}>{category.name}</h4>
+                    <div className='category-container'  onClick={() => navigate('/categoryShop', {
+                        state: {
+                            categoryId: category.id,
+                            categoryName: category.name
+                        }
+                    })}>
+                        <h4>{category.name}</h4>
                         <img src={category.imageUrl} alt="category" />
                     </div>
                 ))
             }
 
+        </div>
         </div>
     )
 }

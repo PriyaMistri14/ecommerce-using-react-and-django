@@ -1,7 +1,7 @@
 
 from django.urls import path,include
 
-from .views import CategoryViewset, ProductViewset, OrderViewset,  ProductDetailViewset, DiscountViewset, DeliveryViewset, PaymentViewset, CartItemViewset, ReviewViewset, IsSuperUser, ProductAllViewset, SearchProduct, SearchProductDetail, UserViewset, CouponViewset
+from .views import CategoryViewset, ProductViewset, OrderViewset,  ProductDetailViewset, DiscountViewset, DeliveryViewset, PaymentViewset, CartItemViewset, ReviewViewset, IsSuperUser, ProductAllViewset, SearchProduct, SearchProductDetail, UserViewset, CouponViewset, pagination
 
 from rest_framework import routers
 
@@ -28,5 +28,6 @@ urlpatterns  =[
     path("mysite/",include(router.urls)), 
     path("mysite/isSuperUser/", IsSuperUser.as_view(), name='isSuperUser' ),
     path("mysite/searchProduct/", SearchProduct.as_view(), name='searchProduct'),
-    path("mysite/searchProductDetail/", SearchProductDetail.as_view(), name='searchProductDetail' ) 
+    path("mysite/searchProductDetail/", SearchProductDetail.as_view(), name='searchProductDetail' ),
+    path('mysite/pagination/', pagination, name="pagination") 
 ]

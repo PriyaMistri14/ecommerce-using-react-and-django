@@ -44,7 +44,7 @@ import OrderDetail from './components/order-detail/order-detail.component';
 
 import '@stripe/stripe-js'
 
-
+import ReviewForm from './components/review/review-form.component';
 
 // ..............
 
@@ -115,6 +115,7 @@ function App() {
               <Link to='/categoryUser'>Category</Link>
               <Link to='/shop'>Shop Now</Link>
               <Link to='/orderDetails'>See Orders</Link>
+          
               {
                 isCartOpen && <CartDropdown />
               }
@@ -124,6 +125,7 @@ function App() {
 
               }
               <CartIcon />
+           
             </nav>
         }
 
@@ -140,6 +142,8 @@ function App() {
           <Route path='/checkout' element={<Checkout />} />
           <Route path='/orderDetails' element={<OrderDetail />} />
           <Route path='/success/:orderId' element={<Success />} />
+          <Route path='/giveReview' element={<ReviewForm />} />
+        
 
           {/* <Route path='/api/token/' element= {<AdminPanel />} /> */}
           {/* <Route path='/adminPanel' element={<AdminPanel />}/> */}

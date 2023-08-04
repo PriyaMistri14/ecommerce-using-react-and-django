@@ -9,10 +9,10 @@ const ReviewEdit = (props) => {
   return (
     <Edit title='Edit a category' {...props} >
         <SimpleForm>
-            <ReferenceInput source='user' reference='user' />
-            <TextInput disabled source='id' />
+        <TextInput disabled source='id' />
+            <ReferenceInput source='user' reference='user' />           
             <TextInput source='rating' />
-            <TextInput source='discription' />
+            <TextInput source='description' />
             <ReferenceInput source='product' reference='product' />
             
         </SimpleForm>

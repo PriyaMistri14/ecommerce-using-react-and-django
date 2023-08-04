@@ -19,6 +19,8 @@ import { orderItem } from '../../store/order/orderSlice'
 
 import { clearCartItemAfterOrder } from '../../store/cart/cartSlice'
 
+import { useNavigate } from 'react-router-dom'
+
 
 
 
@@ -27,13 +29,9 @@ const CheckoutItem = (props) => {
     const { product } = props
 
     const wholeProduct = useSelector(state => state.product.productDetail)
-    // ............................................
 
+const navigate = useNavigate()
 
-   console.log("OOOOOOOOOOOOO productDetailDemo:", product.available_quantity);
-
-
-    // ..................................................
 
     const currentUser = useSelector(state => state.user.currentUser)
 
@@ -129,6 +127,8 @@ const CheckoutItem = (props) => {
        console.log("RRRRREEEE: ", res);
        dispatch(clearCartItemAfterOrder(product))
        alert("successfully ordered!!!")
+       navigate("/orderDetails")
+       
 
        
 

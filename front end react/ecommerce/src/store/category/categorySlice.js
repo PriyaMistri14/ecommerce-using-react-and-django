@@ -13,15 +13,26 @@ export const fetchCategory = createAsyncThunk('/category', async()=>{
 
 
 
-export const fetchProductBasedOnCategory = createAsyncThunk('/productCategory', async(categoryId)=>{
+export const fetchProductBasedOnCategory = createAsyncThunk('/productCategory', async(payload)=>{
 
     const res = await axiosGET('mysite/productAll/')
     const allProducts = res.data
+   
+    const filteredProducts = allProducts.filter(product => product.category == payload.categoryId)
+    console.log("Category wise product : ", filteredProducts, "category Id  : ", payload.categoryId);
 
-    const filteredProducts = allProducts.filter(product => product.category == categoryId)
-    console.log("Category wise product : ", filteredProducts, "category Id  : ", categoryId);
+   const r = await axiosGET(`mysite/pagination/?categoryId=${payload.categoryId}&page_size=${payload.page_size}&page=${payload.page}/`)
+   console.log("Paginated data :  ", r.data.data);
 
-    return filteredProducts
+   const data = {
+    products: r.data.data.slice(0,-1),
+    totalPages: r.data.data.slice(-1)
+   }
+
+   console.log("DADADDDDADDADADA : ", data);
+
+   
+    return r.data
 
 })
 
@@ -49,7 +60,8 @@ export const categorySlice = createSlice({
         categories : null,
         isLoading : false,
         error : null,
-        products : null
+        products : null,
+        totalPages: 1
     },
     reducers:{},
     extraReducers(builder){
@@ -76,7 +88,8 @@ export const categorySlice = createSlice({
         .addCase(fetchProductBasedOnCategory.fulfilled, (state, action)=>{
            
             state.isLoading = false
-            state.products = action.payload
+            state.products = action.payload.data.slice(0,-1)
+            state.totalPages = action.payload.data.slice(-1)[0] // returns [totalPages] => [totalPages][0]=> 2
 
         })
 

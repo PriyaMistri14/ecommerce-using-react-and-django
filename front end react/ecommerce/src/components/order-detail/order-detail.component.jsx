@@ -63,6 +63,7 @@ const OrderDetail = () => {
                 <span>Apply Coupon</span>
                 <span>Cancel Order</span>
                 <span>Pay Now</span>
+                <span>Give Review</span>
             </div>
             <div className='order-detail-item-container'>
           

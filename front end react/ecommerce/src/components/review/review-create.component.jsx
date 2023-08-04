@@ -7,10 +7,9 @@ const ReviewCreate = (props) => {
   return (
     <Create title='Create a review' {...props}>
       <SimpleForm>
-
         <ReferenceInput source='user' reference='user' />
         <TextInput source='rating' />
-        <TextInput source='discription' />
+        <TextInput source='description' />
         <ReferenceInput source='product' reference='product' />
 
       </SimpleForm>

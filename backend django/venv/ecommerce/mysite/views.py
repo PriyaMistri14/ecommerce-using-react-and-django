@@ -26,6 +26,8 @@ from django.http.response import JsonResponse
 
 from .pagination import PageNumberWithPageSizePagination
 
+from django.core.paginator import Paginator
+
 
 User = get_user_model()
 
@@ -304,7 +306,7 @@ class SearchProductDetail(APIView):
         }     
 
         print("DATATA : ", data)  
-        return Response({"data": data})     
+        return Response({"data": data}, status=status.HTTP_200_OK)     
 
 
 class UserViewset(viewsets.ModelViewSet):
@@ -320,6 +322,57 @@ class UserViewset(viewsets.ModelViewSet):
         if order is not None:
             queryset = queryset.order_by(order)
         return queryset
+
+
+
+
+def pagination(request):
+
+    categoryId = request.GET.get('categoryId')
+    page_no = request.GET.get('page')[:-1]
+    data_per_page = int(request.GET.get('page_size')) 
+
+    products = Product.objects.filter(category__exact=categoryId)
+
+    p = Paginator(products, data_per_page)
+    
+    try:
+        page_obj = p.get_page(page_no)
+    except: 
+        page_obj = p.page(1) 
+
+    serialize_data = [c for c in page_obj]
+    no_of_page = p.num_pages
+    # serialize_data.append(no_of_page) 
+ 
+
+    print("@@@@@@@@@@@@@@@@@@@@serialized data", page_obj[0].name, "no of pages: ", no_of_page, "ser::: ", serialize_data[0].name)    
+
+    lst = []
+    for p in page_obj:
+
+        productDetails =ProductDetail.objects.filter(product__exact=p.id).values()
+
+        data ={
+            'id': p.id,
+            'name': p.name,
+            'price':p.price,
+            'category':p.category.id,
+            'imageUrl': p.imageUrl,
+            'product_details': list(productDetails)
+        }    
+
+        print(">>>>>>>>>>>>...............: ", data)
+        lst.append(data)
+    lst.append(no_of_page)
+    
+    print("<<<<<<<<<<<<<<<<<<<<<<<<<<<<...... : ", lst)
+    
+    # return Response({"data": lst})
+ 
+    return JsonResponse({"data":lst}, safe=False) 
+
+
 
 
 

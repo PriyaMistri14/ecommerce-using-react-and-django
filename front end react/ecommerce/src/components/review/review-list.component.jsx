@@ -12,8 +12,8 @@ const ReviewList = (props) => {
 
                 <TextField source='id' />
                 <TextField source='user' />
-                <TextField source='ranting'/>
-                <TextField source='discription' />                
+                <TextField source='rating'/>
+                <TextField source='description' />                
                 <TextField source='product' />
                 <DateField source='created_at' />
                 <DateField source='updated_at' />             

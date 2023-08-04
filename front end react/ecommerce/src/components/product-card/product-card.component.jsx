@@ -35,7 +35,7 @@ useEffect(()=>{
 
 
     return (
-        <div>
+        <div className='product-card-container'>
 
             <h3>{product.name}</h3>
             <p>Price :   ${product.price}</p>
@@ -46,7 +46,7 @@ useEffect(()=>{
                     productImage: product.imageUrl,
                     productPrice: product.price
                 }
-            })} >See Details</p>
+            })} className='see-details-btn' >See Details</p>
 
 
         </div>

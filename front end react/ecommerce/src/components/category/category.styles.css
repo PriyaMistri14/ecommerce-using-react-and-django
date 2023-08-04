@@ -2,6 +2,25 @@
     display: flex;
     flex-direction:  column;
     margin-top: 15px;
-   
+   margin: 10px;
+    
     
 }
+
+.category-main-container{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+   
+}
+
+.category-container img{
+    width: 600px;
+    height: 600px;
+}
+
+.category-container:hover{
+    background-color: bisque;
+}
+
+

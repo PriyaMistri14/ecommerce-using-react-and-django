@@ -52,4 +52,20 @@
 
 
 
+.review-container span:hover{
+
+    color: white;
+    background-color: black;
+
+}
+
+.review-container span{
+    padding: 7px;
+    background-color: burlywood;
+   
+}
+
+
+
+
 

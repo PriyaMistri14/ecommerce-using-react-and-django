@@ -1,0 +1,21 @@
+.product-card-container{
+    padding: 15px;
+}
+
+.product-card-container:hover{
+    background-color: rgb(215, 250, 231);
+}
+
+
+.see-details-btn{
+    color: white;
+    background-color: black;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.see-details-btn:hover{
+    color: black;
+    background-color: white;
+}
+

@@ -28,20 +28,11 @@ const CartIcon = () => {
   const isCartOpen = useSelector(state => state.cart.isCartOpen)
   console.log("isCartOpen", isCartOpen);
 
-  const currentUser = useSelector(state => state.user.currentUser)
 
-  const isAdmin = useSelector(state => state.user.isAdmin)
 
   const setCart = () => {
 
-    if (currentUser !== null) {
-      isAdmin ? navigate('/category') : dispatch(setIsCartOpen())
-
-    }
-    else {
-      navigate('/selectUserOrAdmin')
-    }
-
+    dispatch(setIsCartOpen())
 
   }
 
