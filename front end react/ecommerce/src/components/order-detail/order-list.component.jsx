@@ -13,6 +13,7 @@ const OrderList = (props) => {
                 <TextField source='id' />
                 <TextField source='user' />
                 <TextField source='product_detail'/>
+                <TextField source='discount' />
                 <TextField source='coupon' />
                 <TextField source='quantity' />                
                 <TextField source='status' />

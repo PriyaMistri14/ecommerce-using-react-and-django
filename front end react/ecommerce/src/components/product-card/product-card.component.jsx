@@ -20,16 +20,16 @@ const ProductCard = (props) => {
 
     const isAdmin = useSelector(state => state.user.isAdmin)
 
-useEffect(()=>{
+    useEffect(() => {
 
-    if (currentUser === null) {
-      navigate('/selectUserOrAdmin')
-    }
-  else{
-    isAdmin && navigate('/category')
-  }
+        if (currentUser === null) {
+            navigate('/selectUserOrAdmin')
+        }
+        else {
+            isAdmin && navigate('/category')
+        }
 
-},[])
+    }, [])
 
 
 
@@ -40,6 +40,23 @@ useEffect(()=>{
             <h3>{product.name}</h3>
             <p>Price :   ${product.price}</p>
             <img src={product.imageUrl} alt='product' />
+
+            {/* FOR SINGLE */}
+
+
+            {/* {
+                product.discounts && product.discounts.length != 0 &&  product.discounts[0].isActive && <p>{product.discounts[0].percentage}% Off till {product.discounts[0].due_date}</p>
+            } */}
+
+
+
+            {/* FOR MULTIPLE */}
+
+
+
+            {
+                product.discounts && product.discounts.length != 0 && product.discounts.map(discount => discount.isActive && <p>{discount.percentage}% Off till {discount.due_date}</p>)
+            }
             <p onClick={() => navigate('/productDetailUser', {
                 state: {
                     productId: product.id,

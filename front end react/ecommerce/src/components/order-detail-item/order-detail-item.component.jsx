@@ -142,6 +142,10 @@ const OrderDetailItem = (props) => {
 
 
             }
+            {
+                item.discount ? <span>true: #{item.discount} </span> : <span>false</span>
+
+            }
 
 
 

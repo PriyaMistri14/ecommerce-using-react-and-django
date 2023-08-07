@@ -10,6 +10,7 @@ const OrderCreate = (props) => {
             <SimpleForm>
                 <ReferenceInput source='user' reference='user' />
                 <ReferenceInput source='product_detail' reference='productDetail' />
+                <ReferenceInput source='discount' reference='discount' />
                 <ReferenceInput source='coupon' reference='coupon' />
                 <TextInput source='quantity' />
                 <NumberInput source='total_amount' />

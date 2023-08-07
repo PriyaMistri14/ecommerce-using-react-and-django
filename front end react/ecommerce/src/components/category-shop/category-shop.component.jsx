@@ -42,6 +42,7 @@ const CategoryShop = () => {
 
     const [currentPage, setCurrentPage] = useState(1)
     const [pageSize, setPageSize] = useState(5)
+    const [search, setSearch] = useState("")
 
 
 
@@ -51,10 +52,10 @@ const CategoryShop = () => {
     useEffect(() => {
         if (currentUser !== null) {
             const payload = {
-              
+
                 page: currentPage,
                 page_size: pageSize,
-                categoryId:categoryId
+                categoryId: categoryId
 
             }
 
@@ -86,10 +87,13 @@ const CategoryShop = () => {
 
     const onChangeHandler = (e) => {
         const search = e.target.value
+        setSearch(search)
 
         const payload = {
             search: search,
-            categoryId: categoryId
+            categoryId: categoryId,
+            page: currentPage,
+            page_size: pageSize
         }
 
         dispatch(searchProductBasedOnCategory(payload))
@@ -99,14 +103,28 @@ const CategoryShop = () => {
 
     const onPageChangeHandler = (pageNo) => {
         setCurrentPage(pageNo)
-        const payload = {
-          
-            page: pageNo,
-            page_size: pageSize,
-            categoryId:categoryId,
+        if (search != "") {
+            
+            const payload = {
+                search: search,
+                categoryId: categoryId,
+                page: pageNo,
+                page_size: pageSize
+            }
 
+            dispatch(searchProductBasedOnCategory(payload))
         }
-        dispatch(fetchProductBasedOnCategory(payload))
+        else{
+
+            const payload = {
+    
+                page: pageNo,
+                page_size: pageSize,
+                categoryId: categoryId,
+    
+            }
+            dispatch(fetchProductBasedOnCategory(payload))
+        }
 
 
     }

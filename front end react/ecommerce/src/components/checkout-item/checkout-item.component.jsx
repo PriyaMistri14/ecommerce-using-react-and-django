@@ -22,6 +22,12 @@ import { clearCartItemAfterOrder } from '../../store/cart/cartSlice'
 import { useNavigate } from 'react-router-dom'
 
 
+import Countdown from 'react-countdown'
+
+
+import { axiosPATCH } from '../../axiosApi'
+
+
 
 
 
@@ -30,13 +36,80 @@ const CheckoutItem = (props) => {
 
     const wholeProduct = useSelector(state => state.product.productDetail)
 
-const navigate = useNavigate()
+    const navigate = useNavigate()
 
 
     const currentUser = useSelector(state => state.user.currentUser)
 
     const orderedProduct = useSelector(state => state.order)
     console.log("Ordered products : ", orderedProduct);
+
+
+
+
+    // .............discount price count .............
+
+    var newPrice
+    var due_date
+    var miliseconds
+
+    // FOR SINGLE
+    // if (product.discounts && product.discounts.length != 0 && product.discounts[0].isActive) {
+    //     const percentage = product.discounts[0].percentage
+    //     newPrice =product.price - (product.price * percentage / 100)
+    //     due_date = product.discounts[0].due_date
+    //     miliseconds = new Date(due_date).getTime() - new Date().getTime()
+    //     // miliseconds= miliseconds.getMilliseconds()
+    //     console.log("new price after discount :   ", newPrice);
+    // }
+
+
+
+    // FOR MULTIPLE
+
+    if (product && product.discounts && product.discounts.length != 0) {
+        product.discounts.map(discount => {
+
+            if (discount.isActive) {
+
+                const percentage = discount.percentage
+                newPrice = product.price - (product.price * percentage / 100)
+                due_date = discount.due_date
+                miliseconds = new Date(due_date).getTime() - new Date().getTime()
+                // miliseconds= miliseconds.getMilliseconds()
+                console.log("new price after discount :   ", newPrice);
+
+            }
+
+
+
+        })
+    }
+
+
+
+
+
+  const renderer = (dateObj) => {
+
+    const { days, hours, minutes, seconds, completed } = dateObj
+    if (completed) {
+      const activeDiscount = product && product.discounts && product.discounts.length != 0 && product.discounts.filter(discount => discount.isActive)
+      console.log("Discount id : ", activeDiscount[0].id, "activeDiscount : ", activeDiscount);
+      const res = axiosPATCH(`mysite/discount/${activeDiscount[0].id}/`, { isActive: false })
+      console.log("res after discount is not active : ", res);
+      return <span>Discount is not active !!</span>
+    }
+    else {
+      return <span>Discount is active until : {days} : {hours} : {minutes} : {seconds}</span>
+    }
+  }
+
+
+    // .......................................................
+
+
+
 
 
     const userId = currentUser === null ? "" : currentUser.userId
@@ -71,11 +144,10 @@ const navigate = useNavigate()
     console.log("checkout item component : data", data);
 
     const addProductToCartHandler = () => {
-        if(product.available_quantity == 0)
-        {
+        if (product.available_quantity == 0) {
             alert("No more quantity available !!!")
         }
-        else{
+        else {
 
             const res = dispatch(updateCartItem(data))
             console.log("res in add to cart in checkout page : ", res);
@@ -89,53 +161,80 @@ const navigate = useNavigate()
 
     }
 
-    const clearItemFromCartHandler = () => {       
+    const clearItemFromCartHandler = () => {
         dispatch(clearCartItem(product))
     }
 
 
     const orderProduct = () => {
 
-        const payload = {
-            product_detail: product.productDetailId,
-            user: userId,
-            quantity: product.quantity,
-            total_amount :  product.price * product.quantity
+        var payload
+
+        if (newPrice != undefined) {
+            payload = {
+                product_detail: product.productDetailId,
+                user: userId,
+                quantity: product.quantity,
+                total_amount: newPrice * product.quantity,
+                discount: product.discounts[0].id
+            }
+
+
+
+            //  total_amount = newPrice * product.quantity
+        }
+        else {
+
+            payload = {
+                product_detail: product.productDetailId,
+                user: userId,
+                quantity: product.quantity,
+                total_amount: product.price * product.quantity
+            }
+
+
+
+            // total_amount = product.price * product.quantity
         }
 
-        const otherDetails ={
-            productId:product.productId,
+        // const payload = {
+        //     product_detail: product.productDetailId,
+        //     user: userId,
+        //     quantity: product.quantity,
+        //     total_amount: total_amount
+        // }
+
+        const otherDetails = {
+            productId: product.productId,
             productDetailId: product.productDetailId,
-            quantity:product.quantity,
-            price:product.price,
-            image:product.image,
-            name:product.name,
-            color:product.color,
+            quantity: product.quantity,
+            price: product.price,
+            image: product.image,
+            name: product.name,
+            color: product.color,
             size: product.size,
-            available_quantity:product.available_quantity
-    
+            available_quantity: product.available_quantity,
+            discounts: product.discounts
+
         }
 
 
-        const data ={
-           payload: payload,
-           otherDetails: otherDetails
+        const data = {
+            payload: payload,
+            otherDetails: otherDetails
         }
         console.log("payload to order : ", payload);
 
-       const res = dispatch(orderItem(data))
-       console.log("RRRRREEEE: ", res);
-       dispatch(clearCartItemAfterOrder(product))
-       alert("successfully ordered!!!")
-       navigate("/orderDetails")
-       
+        const res = dispatch(orderItem(data))
+        console.log("RRRRREEEE: ", res);
+        dispatch(clearCartItemAfterOrder(product))
+        alert("successfully ordered!!!")
+        navigate("/giveReview", { state: product.productId })
 
-       
+
+
 
     }
-
-
-
 
 
 
@@ -145,7 +244,15 @@ const navigate = useNavigate()
         <div className='checkout-item-container'>
             <span>{product.name}</span>
             <img className='checkout-image' src={product.image} alt='product' />
-            <span>${product.price}</span>
+            {/* <span>${product.price}</span> */}
+            {
+                newPrice ? <span>${product.price} New price : ${newPrice}</span> :
+                    <span>${product.price}</span>
+            }
+            {
+                newPrice && <Countdown date={Date.now() + miliseconds} renderer={renderer} />
+            }
+
             <div className='arrow' onClick={removeItemFromCartHandler}>
                 &#10094;
 

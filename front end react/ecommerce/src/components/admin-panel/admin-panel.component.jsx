@@ -53,6 +53,12 @@ import CouponEdit from '../coupon/coupon-edit.component';
 
 import CouponList from '../coupon/coupon-list.component';
 
+import DiscountCreate from '../discount/discount-create.component';
+
+import DiscountEdit from '../discount/discount-edit.component';
+
+import DiscountList from '../discount/discount-list.component';
+
 
 
 
@@ -84,6 +90,7 @@ const AdminPanel = () => {
        <Resource name='user' list={UserList} create={UserCreate} edit={UserEdit} />
        <Resource name='order' list={OrderList} create={OrderCreate} edit={OrderEdit} />
        <Resource name='coupon' list={CouponList} create={CouponCreate} edit={CouponEdit} />
+       <Resource name='discount' list={DiscountList} create={DiscountCreate} edit={DiscountEdit} />
 
 
     </Admin>

@@ -15,6 +15,11 @@ export const orderItem = createAsyncThunk('/orderProduct', async (payload) => {
     data['totalAmount'] = res.data.total_amount
     data['coupon'] = res.data.coupon
 
+    if(res.data.discount)
+    {
+        data['discount'] = res.data.discount
+    }
+
     return data
 
 })

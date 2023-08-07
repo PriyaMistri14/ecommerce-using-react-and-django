@@ -3,7 +3,7 @@ from django.db import models
 
 from django.contrib.auth.models import User
 
-from datetime import datetime
+from datetime import datetime, date, timedelta
 
 from django.utils.timezone import now
 
@@ -53,6 +53,7 @@ class Order(models.Model):
     status = models.CharField(max_length=50, default='Pending')  #Pending, Success, Cancelled
     total_amount = models.FloatField(default=0)
     coupon = models.ForeignKey('Coupon', on_delete=models.SET_NULL, null=True, blank=True)
+    discount = models.ForeignKey('Discount', on_delete=models.SET_NULL, null=True , blank=True)
     created_at = models.DateTimeField(default=now)              #  auto_now_all is called only first time obj is created
     updated_at = models.DateTimeField(auto_now = True)                # auto_now is callted every time obj is saved (updated)
 
@@ -78,13 +79,18 @@ class CartItem(models.Model):
     updated_at = models.DateTimeField(auto_now = True) 
 
 
+# ............
+timerObj = date.today() + timedelta(days=0, hours=0, minutes=5, seconds=0, microseconds=0)
+print("TimerObj: ", timerObj, "current time : ", date.today())
 
+# ...............
 
 class Discount(models.Model):
     product = models.ForeignKey('Product', on_delete=models.CASCADE, related_name='discounts')
     percentage = models.FloatField()
-    minimum_order = models.IntegerField()
-    isActive = models.BooleanField(default=False)
+    # minimum_order = models.IntegerField()
+    isActive = models.BooleanField(default=True)
+    due_date = models.DateField(default=timerObj)
     created_at = models.DateTimeField(default=now)              
     updated_at = models.DateTimeField(auto_now = True) 
 

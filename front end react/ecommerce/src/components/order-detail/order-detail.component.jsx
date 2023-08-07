@@ -61,6 +61,7 @@ const OrderDetail = () => {
                 <span>Date</span>
                 <span>Total</span>
                 <span>Apply Coupon</span>
+                <span>Is Discount Added</span>
                 <span>Cancel Order</span>
                 <span>Pay Now</span>
                 <span>Give Review</span>

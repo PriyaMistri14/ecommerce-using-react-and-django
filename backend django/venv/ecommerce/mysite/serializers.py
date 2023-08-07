@@ -73,6 +73,7 @@ class CartItemSerializer(serializers.ModelSerializer):
 
 class ProductAllSerializer(serializers.ModelSerializer):
     product_details= ProductDetailSerializer(many=True) 
+    discounts = DiscountSerializer(many=True)
     class Meta:
         model = Product
         fields= '__all__'

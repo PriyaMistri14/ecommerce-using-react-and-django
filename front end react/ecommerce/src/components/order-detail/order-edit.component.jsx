@@ -11,6 +11,7 @@ const OrderEdit = (props) => {
             <TextInput disabled source='id' />
                 <ReferenceInput source='user' reference='user' />
                 <ReferenceInput source='product_detail' reference='productDetail' />
+                <ReferenceInput source='discount' reference='discount' />
                 <ReferenceInput source='coupon' reference='coupon' />
                 <NumberInput source='total_amount' />
                 <TextInput source='quantity' />

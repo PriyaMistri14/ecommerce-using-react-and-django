@@ -257,20 +257,55 @@ class IsSuperUser(APIView):
 
 class SearchProduct(APIView):
     def post(self, request):
+
+
+        page_no = self.request.query_params.get('page', 1)
+        data_per_page = self.request.query_params.get('page_size ', 5)
+
+      
+
         search =  request.data['search']
         categoryId = request.data['categoryId']
+        
  
         print("category id : PPPPPPPPPPPPPPPP: ", categoryId , "request.data", request.data)
 
         if categoryId :
             products = Product.objects.filter(category__exact=categoryId).filter(Q(name__icontains=search) | Q(price__icontains = search)).values()
-            print("SEARCHED PRODUCTS : ", products)      
-            return Response({"data": products})
+            
+            # return Response({"data": products})
+        else:
+            products = Product.objects.filter(Q(name__icontains=search) | Q(price__icontains = search)).values()
+        
+        paginator = Paginator(products , data_per_page)
+
+        no_of_page = paginator.num_pages
+
+        page_obj = paginator.page(page_no)
+        
 
 
-        products = Product.objects.filter(Q(name__icontains=search) | Q(price__icontains = search)).values()
-        print("SEARCHED PRODUCTS : ", products)      
-        return Response({"data": products})
+        lst = []
+        for p in page_obj:
+            print(".......................................................", p["id"])
+
+            productDetails =ProductDetail.objects.filter(product__exact=p["id"]).values()
+
+            data ={
+                'id': p["id"],
+                'name': p["name"],
+                'price':p["price"],               
+                'imageUrl': p["imageUrl"],
+                'product_details': list(productDetails)
+            }    
+
+            print(">>>>>>>>>>>>...............: ", data)
+            lst.append(data)
+        lst.append(no_of_page)
+
+        print("<<<<<<<<<<<<<<<<<<<<<<<<<<<<...... : ", lst)
+
+        return Response({"data": lst})
 
 
 

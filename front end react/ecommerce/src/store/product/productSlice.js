@@ -5,7 +5,7 @@ import { axiosGET, axiosPOST } from "../../axiosApi";
 
 
 export const fetchProduct = createAsyncThunk('/product', async(payload)=>{
-    const res = await axiosGET(`mysite/product/?ordering=${payload.ordering}&page=${payload.page}&page_size=${payload.page_size}`)
+    const res = await axiosGET(`mysite/productAll/?ordering=${payload.ordering}&page=${payload.page}&page_size=${payload.page_size}`)
     console.log("TTTT: ", res, ";;;", res.data);
     const data = {
         results : res.data.results,
@@ -28,11 +28,20 @@ export const fetchProductDetail = createAsyncThunk('/productDetail', async (prod
 
 
 
-export const searchProduct = createAsyncThunk('/searchProduct', async (search)=>{
-    const res = await axiosPOST("mysite/searchProduct/", {search:search,categoryId:null})
-    const filteredProduct = res.data.data
+export const searchProduct = createAsyncThunk('/searchProduct', async (payload)=>{
+    const res = await axiosPOST(`mysite/searchProduct/?page_size=${payload.page_size}&page=${payload.page}`, {search:payload.search,categoryId:null})
+    const filteredProduct = res.data.data  
     console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ",  filteredProduct);
-    return filteredProduct
+    console.log("Paginated data :  ", res.data.data);
+
+    const data = {
+     results: res.data.data.slice(0,-1),
+     totalPages: res.data.data.slice(-1)
+    }
+ 
+    console.log("DADADDDDADDADADA : ", data);
+    
+    return data
 })
 
 
@@ -96,7 +105,9 @@ const productSlice = createSlice({
 
         .addCase(searchProduct.fulfilled, (state, action)=>{
             state.isLoading = false
-            state.products = action.payload
+            state.products = action.payload.results
+            state.totalPages = action.payload.totalPages
+            // state.products = action.payload
         })
 
         .addCase(searchProduct.rejected, (state, action)=>{

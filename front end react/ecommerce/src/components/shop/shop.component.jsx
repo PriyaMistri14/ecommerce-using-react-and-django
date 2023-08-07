@@ -33,6 +33,7 @@ const Shop = () => {
     const [currentPage, setCurrentPage] = useState(1)
     const [pageSize, setPageSize] = useState(5)
     const [order, setOrder] = useState('id')
+    const [search, setSearch] = useState("")
 
     // const payload = {
     //     ordering: order,
@@ -75,19 +76,38 @@ const Shop = () => {
 
     const onChangeHandler = (e) => {
         const search = e.target.value
-        dispatch(searchProduct(search))
+        setSearch(search)
+        const payload = {
+            search: search,
+            page_size: pageSize,
+            page: currentPage,
+        }
+        dispatch(searchProduct(payload))
     }
 
 
     const onPageChangeHandler = (pageNo) => {
         setCurrentPage(pageNo)
-        const payload = {
-            ordering: order,
-            page: pageNo,
-            page_size: pageSize
+        if (search != "") {
+
+            const payload = {
+                search: search,
+                page_size: pageSize,
+                page: pageNo,
+            }
+            dispatch(searchProduct(payload))
 
         }
-        dispatch(fetchProduct(payload))
+        else{
+
+            const payload = {
+                ordering: order,
+                page: pageNo,
+                page_size: pageSize
+    
+            }
+            dispatch(fetchProduct(payload))
+        }
 
 
 

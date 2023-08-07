@@ -25,6 +25,11 @@ import { setIsReviewCartOpen } from '../../store/review/reviewSlice'
 import Review from '../review/review.component'
 
 
+import Countdown from 'react-countdown'
+import { axiosPATCH } from '../../axiosApi'
+
+
+
 
 
 const ProductDetail = () => {
@@ -54,7 +59,7 @@ const ProductDetail = () => {
   const isLoading = useSelector(state => state.product.isLoading)
 
 
-const isReviewCartOpen = useSelector(state => state.review.isReviewCartOpen)
+  const isReviewCartOpen = useSelector(state => state.review.isReviewCartOpen)
 
 
   const dispatch = useDispatch()
@@ -82,6 +87,74 @@ const isReviewCartOpen = useSelector(state => state.review.isReviewCartOpen)
   const productDetail = wholeProduct === null ? [] : wholeProduct.product_details
 
 
+  // .............discount price count .............
+
+  var newPrice
+  var due_date
+  var miliseconds
+
+
+  // FOR SINGLE
+
+  // if (wholeProduct && wholeProduct.discounts && wholeProduct.discounts.length != 0 && wholeProduct.discounts[0].isActive) {
+  //   const percentage = wholeProduct.discounts[0].percentage
+  //   newPrice =productPrice - (productPrice * percentage / 100)
+  //   due_date = wholeProduct.discounts[0].due_date
+  //   miliseconds = new Date(due_date).getTime() - new Date().getTime()
+  //   // miliseconds= miliseconds.getMilliseconds()
+  //   console.log("new price after discount :   ", newPrice);
+  // }
+
+
+
+
+// FOR MULTIPLE
+
+  if (wholeProduct && wholeProduct.discounts && wholeProduct.discounts.length != 0) {
+    wholeProduct.discounts.map(discount => {
+      if(discount.isActive)
+      {
+
+        const percentage = discount.percentage
+        newPrice = productPrice - (productPrice * percentage / 100)
+        due_date = discount.due_date
+        miliseconds = new Date(due_date).getTime() - new Date().getTime()
+        // miliseconds= miliseconds.getMilliseconds()
+        console.log("new price after discount :   ", newPrice);
+      }
+
+
+    })
+  }
+
+
+
+  const renderer = (dateObj) => {
+
+    const { days, hours, minutes, seconds, completed } = dateObj
+    if (completed) {
+      const activeDiscount = wholeProduct && wholeProduct.discounts && wholeProduct.discounts.length != 0 && wholeProduct.discounts.filter(discount => discount.isActive)
+      console.log("Discount id : ", activeDiscount[0].id, "activeDiscount : ", activeDiscount);
+      const res = axiosPATCH(`mysite/discount/${activeDiscount[0].id}/`, { isActive: false })
+      console.log("res after discount is not active : ", res);
+      return <span>Discount is not active !!</span>
+    }
+    else {
+      return <span>Discount is active until : {days} : {hours} : {minutes} : {seconds}</span>
+    }
+  }
+
+  console.log("new price , due_date, miliseconds:     ", newPrice, due_date, miliseconds);
+
+
+
+
+
+
+
+
+
+  // .......................................................
 
   console.log("Product details:UUUUUUU  ", productDetail, "whole product: ", wholeProduct);
 
@@ -145,7 +218,7 @@ const isReviewCartOpen = useSelector(state => state.review.isReviewCartOpen)
   }
 
 
-  const setReviewCart = ()=>{
+  const setReviewCart = () => {
     dispatch(setIsReviewCartOpen())
   }
 
@@ -153,7 +226,7 @@ const isReviewCartOpen = useSelector(state => state.review.isReviewCartOpen)
 
 
 
-console.log("isReviewCartOpen : ", isReviewCartOpen);
+  console.log("isReviewCartOpen : ", isReviewCartOpen);
 
 
 
@@ -181,6 +254,22 @@ console.log("isReviewCartOpen : ", isReviewCartOpen);
 
       <img src={productImage} alt='product' />
       <p>Price : ${productPrice}</p>
+
+
+      {/* FOR PRODUCT THAT EXISTS ONLY SINGLE TIME (FOR ONLY ONE DISCOUNT PER PRODUCT) IN DB EITHER ACTIVE OR NOT ACTIVE*/}
+      {/* {
+        newPrice &&  <><p>{wholeProduct.discounts[0].percentage}% Off till {wholeProduct.discounts[0].due_date}</p><p>New price : ${newPrice}</p></>
+      } */}
+
+
+
+      {/* FOR MULTIPLE DISCOUNT IN ONE PRODUCT BUT AT A TIME ONLY ONE IS ACTIVE  */}
+      {
+        newPrice && wholeProduct.discounts.map(discount => discount.isActive && <><p>{discount.percentage}% Off till {discount.due_date}</p><p>New price : ${newPrice}</p></>)
+      }
+      {
+        newPrice && <Countdown date={Date.now() + miliseconds} renderer={renderer} />
+      }
 
       <div className='product-detail-main-container'>
         {
@@ -217,15 +306,15 @@ console.log("isReviewCartOpen : ", isReviewCartOpen);
 
       }
 
-<br />
-<br />
+      <br />
+      <br />
       <div className='review-container'>
         {
           isReviewCartOpen ? <span onClick={setReviewCart}>Cancle</span> : <span onClick={setReviewCart}>See review</span>
         }
 
         {
-          isReviewCartOpen && <Review productId={productId}/>
+          isReviewCartOpen && <Review productId={productId} />
         }
 
       </div>
