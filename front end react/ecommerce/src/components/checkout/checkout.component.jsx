@@ -12,6 +12,9 @@ import { useNavigate } from 'react-router-dom'
 
 import CheckoutItem from '../checkout-item/checkout-item.component'
 
+import { Link } from 'react-router-dom'
+
+
 
 
 const Checkout = () => {
@@ -45,7 +48,8 @@ const Checkout = () => {
 
 
   return (
-    <div className='checkout-container'>
+   cartItems && cartItems.length != 0 ? <div className='checkout-container'>
+     <div className='back-btn'> <Link to='/shop'>&#10094;  BACK</Link></div>
         <span>Name</span>
         <span>Image</span>
         <span>Price</span>
@@ -62,7 +66,7 @@ const Checkout = () => {
         
         }
       <p>Total : ${cartTotal}</p>
-    </div>
+    </div>: <p>No Cart Item found!!</p>
   )
 }
 

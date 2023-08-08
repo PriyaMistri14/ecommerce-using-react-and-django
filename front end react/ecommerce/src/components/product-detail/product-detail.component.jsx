@@ -29,6 +29,9 @@ import Countdown from 'react-countdown'
 import { axiosPATCH } from '../../axiosApi'
 
 
+import { Link } from 'react-router-dom'
+
+
 
 
 
@@ -108,12 +111,11 @@ const ProductDetail = () => {
 
 
 
-// FOR MULTIPLE
+  // FOR MULTIPLE
 
   if (wholeProduct && wholeProduct.discounts && wholeProduct.discounts.length != 0) {
     wholeProduct.discounts.map(discount => {
-      if(discount.isActive)
-      {
+      if (discount.isActive) {
 
         const percentage = discount.percentage
         newPrice = productPrice - (productPrice * percentage / 100)
@@ -233,6 +235,7 @@ const ProductDetail = () => {
   return (
 
     <div>
+      <div className='back-btn'> <Link to='/shop'>&#10094;  BACK</Link></div>
 
       <h2>Details</h2>
 

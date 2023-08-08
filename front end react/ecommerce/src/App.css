@@ -45,5 +45,58 @@
   flex-direction: row;
   justify-content: space-between;
   margin: 30px;
+  
 }
+.nav-container a {
+  text-decoration: none;
+  color: black;
+  padding: 4px;
+  padding-bottom: 2px;
+}
+
+
+
+
+
+
+
+.nav-container a:hover{
+  color: white;
+  background-color: black;
+
+}
+
+
+
+
+
+/* For all back buttons */
+.back-btn{
+  display: flex;
+ padding-left: 50px;
+ 
+
+}
+.back-btn a{
+  text-decoration: none;
+  color: black;
+
+  padding: 4px;
+}
+.back-btn a:hover{
+  color: white;
+  background-color: black;
+}
+
+
+.logo{
+  width: 30px;
+  height: 30px;
+  color: white;
+}
+.logo:hover{
+  background-color: white;
+}
+
+
 

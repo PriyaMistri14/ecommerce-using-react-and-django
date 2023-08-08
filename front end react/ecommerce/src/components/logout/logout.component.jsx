@@ -21,18 +21,17 @@ const Logout = () => {
     const logoutHandler = async () => {
 
         try {
-
-            const res = await axiosPOST("auth/logout/", {
-                refresh_token: localStorage.getItem("refresh_token")
-            })
-
+            const res = await axiosPOST("auth/logout/",
+                {
+                    refresh_token: localStorage.getItem("refresh_token")
+                })
         }
         catch (error) {
             console.log("Error while blacklisting tthe token :::::", error)
         }
 
         dispatch(removeCurrentUser())
-        dispatch(setIsAdmin(false))
+        dispatch(setIsAdmin(false))        
 
 
         axiosIntance.defaults.headers["Authorization"] = null
@@ -46,9 +45,7 @@ const Logout = () => {
 
 
     return (
-        <div>
-           <p onClick={logoutHandler}>LOG OUT</p>  
-        </div>
+        <a onClick={logoutHandler}>LOG OUT</a>
     )
 }
 

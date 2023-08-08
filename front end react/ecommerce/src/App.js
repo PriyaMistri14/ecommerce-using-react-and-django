@@ -54,6 +54,19 @@ import CategoryEdit from './components/category/category-edit.component';
 import Checkout from './components/checkout/checkout.component';
 import Success from './components/success/success.component';
 
+import ForgotPassword from './components/forgot-password/forgot-password.component';
+
+import UserProfile from './components/user-profile/user-profile.component';
+
+import UserProfileIcon from './components/user-profile-icon/user-profile-icon.component';
+
+import EditProfile from './components/edit-profile/edit-profile.component';
+
+
+import { ReactComponent as Logo } from '../src/assets/crown.svg'
+
+
+
 const authProvider = jwtTokenAuthProvider()
 const dataProvider = drfProvider("http://localhost:8000/mysite", fetchJsonWithAuthJWTToken);
 
@@ -74,6 +87,9 @@ function App() {
   const isAdmin = useSelector(state => state.user.isAdmin)
 
   console.log("ISADMIN :  ", isAdmin);
+
+
+  const isUserProfileCartOpen = useSelector(state => state.user.isUserProfileCartOpen)
 
 
 
@@ -110,7 +126,7 @@ function App() {
         {
           isAdmin ? <AdminPanel />:
             <nav className='nav-container'>
-              <Link to='/'>LOGO</Link>
+              <Link to='/'><Logo className='logo'/></Link>
               {/* <Link to='/adminPanel'>Admin</Link> */}
               <Link to='/categoryUser'>Category</Link>
               <Link to='/shop'>Shop Now</Link>
@@ -119,11 +135,15 @@ function App() {
               {
                 isCartOpen && <CartDropdown />
               }
+              {
+                isUserProfileCartOpen && <UserProfile />
+              }
 
               {
                 currentUser ? <Logout /> : <Link to='/selectUserOrAdmin'>Login</Link>
 
               }
+              <UserProfileIcon />
               <CartIcon />
            
             </nav>
@@ -143,6 +163,8 @@ function App() {
           <Route path='/orderDetails' element={<OrderDetail />} />
           <Route path='/success/:orderId' element={<Success />} />
           <Route path='/giveReview' element={<ReviewForm />} />
+          <Route path='/forgotPassword' element={<ForgotPassword />} />
+          <Route path='/editProfile' element={<EditProfile /> } />
         
 
           {/* <Route path='/api/token/' element= {<AdminPanel />} /> */}

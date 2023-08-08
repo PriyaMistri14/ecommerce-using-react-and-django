@@ -41,8 +41,10 @@ const CheckoutItem = (props) => {
 
     const currentUser = useSelector(state => state.user.currentUser)
 
-    const orderedProduct = useSelector(state => state.order)
-    console.log("Ordered products : ", orderedProduct);
+    const orderedProductWhole = useSelector(state => state.order)
+    console.log("Ordered products : ", orderedProductWhole);
+
+    const orderedItems = orderedProductWhole ? orderedProductWhole.orderedItems : []
 
 
 
@@ -90,20 +92,20 @@ const CheckoutItem = (props) => {
 
 
 
-  const renderer = (dateObj) => {
+    const renderer = (dateObj) => {
 
-    const { days, hours, minutes, seconds, completed } = dateObj
-    if (completed) {
-      const activeDiscount = product && product.discounts && product.discounts.length != 0 && product.discounts.filter(discount => discount.isActive)
-      console.log("Discount id : ", activeDiscount[0].id, "activeDiscount : ", activeDiscount);
-      const res = axiosPATCH(`mysite/discount/${activeDiscount[0].id}/`, { isActive: false })
-      console.log("res after discount is not active : ", res);
-      return <span>Discount is not active !!</span>
+        const { days, hours, minutes, seconds, completed } = dateObj
+        if (completed) {
+            const activeDiscount = product && product.discounts && product.discounts.length != 0 && product.discounts.filter(discount => discount.isActive)
+            console.log("Discount id : ", activeDiscount[0].id, "activeDiscount : ", activeDiscount);
+            const res = axiosPATCH(`mysite/discount/${activeDiscount[0].id}/`, { isActive: false })
+            console.log("res after discount is not active : ", res);
+            return <span>Discount is not active !!</span>
+        }
+        else {
+            return <span>Discount is active until : {days} : {hours} : {minutes} : {seconds}</span>
+        }
     }
-    else {
-      return <span>Discount is active until : {days} : {hours} : {minutes} : {seconds}</span>
-    }
-  }
 
 
     // .......................................................
@@ -168,6 +170,11 @@ const CheckoutItem = (props) => {
 
     const orderProduct = () => {
 
+        if (orderedItems && orderedItems.length == 0)  //first order
+        {
+            alert("Congratulations , you have received coupon for your first order, Coupon code is : `FirstOrder` ")
+        }
+
         var payload
 
         if (newPrice != undefined) {
@@ -180,8 +187,6 @@ const CheckoutItem = (props) => {
             }
 
 
-
-            //  total_amount = newPrice * product.quantity
         }
         else {
 
@@ -194,15 +199,10 @@ const CheckoutItem = (props) => {
 
 
 
-            // total_amount = product.price * product.quantity
+
         }
 
-        // const payload = {
-        //     product_detail: product.productDetailId,
-        //     user: userId,
-        //     quantity: product.quantity,
-        //     total_amount: total_amount
-        // }
+
 
         const otherDetails = {
             productId: product.productId,

@@ -25,7 +25,7 @@ const CartDropdown = () => {
     return (
         <div className='card-dropdown-container'>
             {
-                cartItems ? cartItems.map(cartItem => (
+                cartItems && cartItems.length != 0 ? cartItems.map(cartItem => (
                     <div className='cart-items'>
                         <img src={cartItem.image} alt='cartItem' />
                         <div>
@@ -38,11 +38,17 @@ const CartDropdown = () => {
                       
                     </div>
                 )) :
-                    "No cart item found!!"
+                   <p>No cart item found!!</p> 
             }
-              <button onClick={goToCheckOut}>Go to checkout</button>
+         
+            {
+                cartItems && cartItems.length != 0 ? 
+                <button onClick={goToCheckOut}>Go to checkout</button>
+                : <button onClick={()=>navigate('/shop')} >Shop Now</button>
 
 
+            }
+              
         </div>
     )
 }

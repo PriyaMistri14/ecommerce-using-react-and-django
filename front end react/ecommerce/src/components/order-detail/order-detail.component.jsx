@@ -13,6 +13,8 @@ import { useEffect } from 'react'
 
 import { useNavigate } from 'react-router-dom'
 
+import { Link } from 'react-router-dom'
+
 
 
 
@@ -50,7 +52,9 @@ const OrderDetail = () => {
 
 
     return (
-        <div className='order-detail-container'>
+        
+        orderedItems && orderedItems.length != 0 ? <div className='order-detail-container'>
+            <div className='back-btn'> <Link to='/shop'>&#10094;  BACK</Link></div>
             <div className='order-detail'><span>Name</span>
                 <span>Image</span>
                 <span>Price</span>
@@ -67,14 +71,17 @@ const OrderDetail = () => {
                 <span>Give Review</span>
             </div>
             <div className='order-detail-item-container'>
-          
+
                 {
                     orderedItems && orderedItems.map((orderedItem) => <OrderDetailItem item={orderedItem} />)
                 }
-          
 
+
+            </div>
         </div>
-        </div>
+        
+        :<><div className='back-btn'> <Link to='/shop'>&#10094;  BACK</Link></div> 
+        <p>No order found!!!</p></>
     )
 }
 

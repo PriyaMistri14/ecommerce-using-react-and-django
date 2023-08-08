@@ -49,7 +49,8 @@ export const applyCoupon = createAsyncThunk('/applyCoupon', async (payload) => {
 
         const res = await axiosGET('mysite/order/')
         const allOrders = res.data
-        const filteredOrders = allOrders.filter(data => data.coupon == filteredCoupons[0].id)
+        const allOrdersOfUser = allOrders.filter(data => data.user == payload.userId)
+        const filteredOrders = allOrdersOfUser.filter(data => data.coupon == filteredCoupons[0].id)
 
 
 

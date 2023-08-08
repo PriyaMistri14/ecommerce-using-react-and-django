@@ -6,7 +6,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 
-from .serializers import UserRegisterSerializer
+from .serializers import UserRegisterSerializer, UserChangePasswordSerializer, UserUpdateSerializer
 
 
 from rest_framework_simplejwt.views import TokenObtainPairView
@@ -14,6 +14,16 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from .serializers import CustomTokenObtainPairSerializer
 
 from rest_framework_simplejwt.tokens import RefreshToken
+
+from rest_framework.generics import UpdateAPIView
+
+from django.contrib.auth import get_user_model
+
+
+
+User = get_user_model()
+
+
 
 
 
@@ -66,5 +76,18 @@ class Logout(APIView):
 
 
 
+class UserChangePasswordAPIView(UpdateAPIView):
+    serializer_class=UserChangePasswordSerializer
+    queryset = User.objects.all()
+    model=User
+    
+  
+
+
+class UserUpdateAPIView(UpdateAPIView):
+    serializer_class=UserUpdateSerializer
+    queryset = User.objects.all()
+    model=User  
+    
 
 

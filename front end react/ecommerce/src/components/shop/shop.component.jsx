@@ -122,7 +122,7 @@ const Shop = () => {
     return (
         <div className='shop-container'>
             <h2>Shop Now</h2>
-            <input type='search' placeholder='Search Here' onChange={onChangeHandler} />
+            <input type='search' placeholder='Search Here' onChange={onChangeHandler} />      
 
             <div className='product-container'>
 

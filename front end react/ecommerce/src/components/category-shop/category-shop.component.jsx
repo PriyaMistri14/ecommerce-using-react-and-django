@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux'
 
 import { useDispatch } from 'react-redux'
 
-import { useLocation } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
 import { useEffect } from 'react'
 
@@ -104,7 +104,7 @@ const CategoryShop = () => {
     const onPageChangeHandler = (pageNo) => {
         setCurrentPage(pageNo)
         if (search != "") {
-            
+
             const payload = {
                 search: search,
                 categoryId: categoryId,
@@ -114,14 +114,14 @@ const CategoryShop = () => {
 
             dispatch(searchProductBasedOnCategory(payload))
         }
-        else{
+        else {
 
             const payload = {
-    
+
                 page: pageNo,
                 page_size: pageSize,
                 categoryId: categoryId,
-    
+
             }
             dispatch(fetchProductBasedOnCategory(payload))
         }
@@ -131,12 +131,12 @@ const CategoryShop = () => {
 
 
 
-
-
-
-
     return (
         <div className='shop-container'>
+
+            <div className='back-btn'> <Link to='/categoryUser'>&#10094;  BACK</Link></div>
+
+
             <h2>{categoryName}</h2>
             <input type='search' placeholder='search here' onChange={onChangeHandler} />
             <div className='product-container'>

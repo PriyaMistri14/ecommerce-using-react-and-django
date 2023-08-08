@@ -23,6 +23,11 @@ import AdminPanel from '../admin-panel/admin-panel.component'
 import { jwtTokenAuthProvider } from 'ra-data-django-rest-framework'
 
 
+import { Link } from 'react-router-dom'
+
+
+import './login-form.styles.css'
+
 
 
 const Login = () => {
@@ -45,7 +50,7 @@ const Login = () => {
     const isAdmin = useSelector(state => state.user.isAdmin)
     console.log("ISADMIN   :    ", isAdmin);
 
-    if(userType == 'admin'){
+    if (userType == 'admin') {
         console.log("if is called");
         const res = dispatch(setIsAdmin(true))
         console.log("Response in if after : ", res);
@@ -60,10 +65,10 @@ const Login = () => {
             isAdmin ? navigate('/category') : navigate('/categoryUser')
 
         }
-      
-      
-  
-        
+
+
+
+
     }, [])
 
     console.log("ISADMIN AFTER   :    ", isAdmin);
@@ -95,7 +100,7 @@ const Login = () => {
             if (resCheckAdmin.meta.requestStatus === 'fulfilled' && !resCheckAdmin.payload) {
                 console.log("If condition is true");
 
-            
+
                 field.setFieldError("password", "No active ADMIN account found for given credentials!!")
             }
             else {
@@ -158,11 +163,11 @@ const Login = () => {
     })
 
 
-const changeRole = ()=>{
-    dispatch(removeCurrentUser())
-    dispatch(setIsAdmin(false))
-    navigate('/selectUserOrAdmin')
-}
+    const changeRole = () => {
+        dispatch(removeCurrentUser())
+        dispatch(setIsAdmin(false))
+        navigate('/selectUserOrAdmin')
+    }
 
 
 
@@ -171,9 +176,12 @@ const changeRole = ()=>{
 
     return (
         <div>
-          <p onClick={changeRole}>Change Role</p>
+            <br />
+
+
+            <p onClick={changeRole} className='change-role-btn'>Change Role</p>
             <h2>Login Form</h2>
-            
+
 
             <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit} >
                 <Form >
@@ -194,6 +202,10 @@ const changeRole = ()=>{
                 </Form>
 
             </Formik>
+            <br />
+            <br />
+            <p>Forgot password ? <Link to='/forgotPassword'>Click here</Link></p>
+            <p>Don't have an account ? <Link to='/register'>Register</Link></p>
 
         </div>
     )

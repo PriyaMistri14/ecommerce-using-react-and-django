@@ -1,0 +1,10 @@
+.change-role-btn:hover
+{
+    color: white;
+    background-color: black;
+}
+
+.change-role-btn{
+    width: 120px;
+    margin-left: 580px;
+}

@@ -1,0 +1,27 @@
+.user-profile-container {
+    position: absolute;
+    width: 240px;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    border: 1px solid black;
+    background-color: white;
+    top: 90px;
+    right: 100px;
+    z-index: 5;
+    overflow: scroll;
+
+
+}
+
+.change-pwd-btn {
+    color: white;   
+    background-color: black;
+    padding: 4px;
+}
+
+
+.change-pwd-btn:hover {
+    color: black;
+    background-color: rgb(247, 126, 126);
+}

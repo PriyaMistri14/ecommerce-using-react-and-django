@@ -11,6 +11,8 @@ import { useSelector } from 'react-redux'
 
 import { useEffect } from 'react'
 
+import { Link } from 'react-router-dom'
+
 
 const Register = () => {
 
@@ -63,7 +65,7 @@ const Register = () => {
             const res = await axiosPOST("auth/register/", payload)
             console.log("RESPONSE :: ", res);
             alert("Successfully Register!!")
-            navigate("/login")
+            navigate("/loginUser")
 
         }catch(error){
             console.log("Error while register : ", error);
@@ -103,6 +105,10 @@ const Register = () => {
 
 
         </Formik>
+       
+            <br />
+            <br />
+            <p>Already have an account ? <Link to='/loginUser'>Register</Link></p>
 
       
     </div>

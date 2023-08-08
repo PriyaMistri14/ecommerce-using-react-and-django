@@ -15,6 +15,8 @@ import { applyCoupon } from '../../store/order/orderSlice'
 
 import { useNavigate } from 'react-router-dom'
 
+import { useSelector } from 'react-redux'
+
 
 
 
@@ -44,6 +46,9 @@ const OrderDetailItem = (props) => {
     const dispatch = useDispatch()
 
     const navigate = useNavigate()
+
+    const currentUser = useSelector(state => state.user.currentUser)
+    const userId = currentUser ? currentUser.userId : 0
 
 
     const { item } = props
@@ -82,7 +87,7 @@ const OrderDetailItem = (props) => {
 
     const applyCouponToOrder = () => {
 
-        const res = dispatch(applyCoupon({ couponCode: couponCode, orderId: item.orderId, total: item.totalAmount }))
+        const res = dispatch(applyCoupon({ couponCode: couponCode, orderId: item.orderId, total: item.totalAmount, userId: userId }))
 
         console.log("Response of apply coupon");
 

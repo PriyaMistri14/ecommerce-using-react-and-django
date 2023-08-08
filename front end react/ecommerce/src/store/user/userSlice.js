@@ -26,7 +26,8 @@ export const userSlice= createSlice({
         isLoading:false,
         error: null,
         isAdmin: false,
-        isAdminFound: false
+        isAdminFound: false,
+        isUserProfileCartOpen: false
     },
     reducers:{
         removeCurrentUser: (state, action)=>{
@@ -34,7 +35,10 @@ export const userSlice= createSlice({
         },
         setIsAdmin: (state, action)=>{           
             state.isAdmin = action.payload
-        }
+        },
+        setIsUserProfileCartOpen: (state, action) => {
+            state.isUserProfileCartOpen = !state.isUserProfileCartOpen
+        },
     },
     extraReducers(builder){
         builder
@@ -62,6 +66,6 @@ export const userSlice= createSlice({
 })
 
 
-export const  {removeCurrentUser, setIsAdmin} =  userSlice.actions
+export const  {removeCurrentUser, setIsAdmin, setIsUserProfileCartOpen} =  userSlice.actions
 
 export default userSlice.reducer
