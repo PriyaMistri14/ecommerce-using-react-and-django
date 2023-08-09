@@ -14,20 +14,20 @@ const OTP = Math.random().toString().substr(2, 6)
 console.log("OTP   :  ", OTP);
 var counter = 20;
 
-// var timer = setInterval(() => { 
-//     console.log("called");
+var timer = setInterval(() => { 
+    console.log("called");
 
-//     if (counter < 0) {
+    if (counter < 0) {
 
-//         clearInterval(timer);
-//         alert("Times Up! , OTP is resended!!")
-//         window.location.reload()
-//     } else {
-//         console.log("called else", document.getElementById("counter"));
-//         document.getElementById("counter").innerHTML = counter
-//         counter--;
-//     }
-// }, 1000);
+        clearInterval(timer);
+        alert("Times Up! , OTP is resended!!")
+        window.location.reload()
+    } else {
+        console.log("called else", document.getElementById("counter"));
+        document.getElementById("counter").innerHTML = 'Time remaning : ' + counter
+        counter--;
+    }
+}, 1000);
 
 console.log("Counter :   ", counter);
 
@@ -48,10 +48,7 @@ const ForgotPassword = () => {
         if (currentUser !== null) {
             isAdmin && navigate('/category')
 
-        }
-        else{
-            navigate("/selectUserOrAdmin")
-        }
+        }    
 
 
     }, [])
@@ -104,7 +101,7 @@ const ForgotPassword = () => {
                     <br />
                     <br />
                     <ErrorMessage name='OTP' /><br /><br />
-                    {/* <>Time Remaining : <span id='counter'></span></> */}  {/* for timer to display remaining time for OTP valid*/}
+                   <span id='counter'></span>  {/* for timer to display remaining time for OTP valid*/}
                     <br />
                     <br />
                     Password : <Field name='password' type='password' />

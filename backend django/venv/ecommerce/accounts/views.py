@@ -90,4 +90,3 @@ class UserUpdateAPIView(UpdateAPIView):
     model=User  
     
 
-

@@ -85,7 +85,7 @@ const ProductDetail = () => {
   }, [])
 
 
-  // const productDetail = useSelector(state => state.product.productDetail.product_details)
+ 
   const wholeProduct = useSelector(state => state.product.productDetail)
   const productDetail = wholeProduct === null ? [] : wholeProduct.product_details
 
@@ -120,8 +120,7 @@ const ProductDetail = () => {
         const percentage = discount.percentage
         newPrice = productPrice - (productPrice * percentage / 100)
         due_date = discount.due_date
-        miliseconds = new Date(due_date).getTime() - new Date().getTime()
-        // miliseconds= miliseconds.getMilliseconds()
+        miliseconds = new Date(due_date).getTime() - new Date().getTime()      
         console.log("new price after discount :   ", newPrice);
       }
 
@@ -181,9 +180,7 @@ const ProductDetail = () => {
       payload,
       item
     }
-    console.log("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<", data.item.productDetail.available_quantity);
-    console.log("PAYLOADDDD :  ", payload, "Product Detailllllll : ", productDetail, "itemmm : ", item);
-
+    
     if (productDetail.available_quantity == 0) {
       alert("No more quantity avaliable!!")
 
@@ -234,7 +231,7 @@ const ProductDetail = () => {
 
   return (
 
-    <div>
+   isLoading ? <p>Loading....</p> : <div>
       <div className='back-btn'> <Link to='/shop'>&#10094;  BACK</Link></div>
 
       <h2>Details</h2>

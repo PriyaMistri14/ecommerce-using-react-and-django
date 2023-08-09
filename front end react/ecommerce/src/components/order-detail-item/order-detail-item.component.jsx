@@ -154,10 +154,7 @@ const OrderDetailItem = (props) => {
 
 
 
-            {/* <div className='coupon-container'>
-                <input type='text' name='coupon' onChange={(e) => setCouponCode(e.target.value)} />
-                <span onClick={applyCoupon}>APPLY</span>
-            </div> */}
+
             {
                 item.orderStatus !== 'Cancelled' && <span onClick={cancelOrder} className='apply-btn'>Cancel Order</span>
             }

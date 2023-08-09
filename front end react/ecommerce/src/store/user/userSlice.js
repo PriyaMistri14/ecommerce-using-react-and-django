@@ -12,10 +12,16 @@ export const setCurrentUser = createAsyncThunk('/user', async(payload)=>{
 
 
 
+
+
+
 export const checkIsAdmin = createAsyncThunk('/admin', async(payload)=>{
     const res = await axiosPOST('mysite/isSuperUser/', payload)
     return res.data.data
 })
+
+
+
 
 
 
@@ -39,6 +45,12 @@ export const userSlice= createSlice({
         setIsUserProfileCartOpen: (state, action) => {
             state.isUserProfileCartOpen = !state.isUserProfileCartOpen
         },
+        setCurrentUserAfterGoogleLogin : (state, action)=>{
+            state.currentUser = action.payload
+        },
+        updateCurrentUser : (state, action) =>{
+            state.currentUser = action.payload
+        }
     },
     extraReducers(builder){
         builder
@@ -66,6 +78,6 @@ export const userSlice= createSlice({
 })
 
 
-export const  {removeCurrentUser, setIsAdmin, setIsUserProfileCartOpen} =  userSlice.actions
+export const  {removeCurrentUser, setIsAdmin, setIsUserProfileCartOpen, setCurrentUserAfterGoogleLogin, updateCurrentUser} =  userSlice.actions
 
 export default userSlice.reducer

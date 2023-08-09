@@ -1,8 +1,6 @@
 import React from 'react'
 import {Admin, Resource} from 'react-admin'
 
-import restProvider from 'ra-data-simple-rest'
-
 import CategoryList from '../category/category-list.component'
 
 import drfProvider, { jwtTokenAuthProvider, fetchJsonWithAuthJWTToken } from 'ra-data-django-rest-framework';
@@ -67,8 +65,6 @@ import CustomJwtTokenAuthProvider from './authProvider';
 
 import Login from '../login-form/login-form.component';
 
-
-const authProvider = jwtTokenAuthProvider()
 const dataProvider = drfProvider("http://localhost:8000/mysite", fetchJsonWithAuthJWTToken);
 
 // ..........

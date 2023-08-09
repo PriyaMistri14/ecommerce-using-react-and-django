@@ -8,7 +8,7 @@ import { fetchUtils } from 'ra-core';
 
 function CustomJwtTokenAuthProvider(options){
  
-  console.log("OPTION :--------------- ", options);
+ 
   const opts = {
     obtainAuthTokenUrl: 'http://127.0.0.1:8000/auth/login/',
     ...options,

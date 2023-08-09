@@ -30,17 +30,14 @@ const Shop = () => {
     const currentUser = useSelector(state => state.user.currentUser)
     const isAdmin = useSelector(state => state.user.isAdmin)
 
+    const isLoading = useSelector(state => state.product.isLoading)
+
     const [currentPage, setCurrentPage] = useState(1)
     const [pageSize, setPageSize] = useState(5)
     const [order, setOrder] = useState('id')
     const [search, setSearch] = useState("")
 
-    // const payload = {
-    //     ordering: order,
-    //     page: currentPage,
-    //     page_size: pageSize
-
-    // }
+  
 
     useEffect(() => {
         if (currentUser !== null) {
@@ -120,7 +117,7 @@ const Shop = () => {
 
 
     return (
-        <div className='shop-container'>
+       isLoading ?<p>Loading.......</p> : <div className='shop-container'>
             <h2>Shop Now</h2>
             <input type='search' placeholder='Search Here' onChange={onChangeHandler} />      
 

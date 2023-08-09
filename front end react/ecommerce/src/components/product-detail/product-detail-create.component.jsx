@@ -10,7 +10,7 @@ const ProductDetailCreate = (props) => {
         <TextInput source='available_quantity' />
         <TextInput source='available_size' />
         <TextInput source='available_color' />
-        <ReferenceInput source='product' reference='product' />
+        <ReferenceInput source='product' reference='product' />      
 
     </SimpleForm>
 

@@ -21,8 +21,6 @@ const CartIcon = () => {
 
   const dispatch = useDispatch()
 
-  const navigate = useNavigate()
-
   const cartCount = useSelector(state => state.cart.cartCount)
 
   const isCartOpen = useSelector(state => state.cart.isCartOpen)

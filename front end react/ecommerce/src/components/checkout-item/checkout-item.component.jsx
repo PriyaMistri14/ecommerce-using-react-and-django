@@ -77,8 +77,7 @@ const CheckoutItem = (props) => {
                 const percentage = discount.percentage
                 newPrice = product.price - (product.price * percentage / 100)
                 due_date = discount.due_date
-                miliseconds = new Date(due_date).getTime() - new Date().getTime()
-                // miliseconds= miliseconds.getMilliseconds()
+                miliseconds = new Date(due_date).getTime() - new Date().getTime()               
                 console.log("new price after discount :   ", newPrice);
 
             }
@@ -244,7 +243,7 @@ const CheckoutItem = (props) => {
         <div className='checkout-item-container'>
             <span>{product.name}</span>
             <img className='checkout-image' src={product.image} alt='product' />
-            {/* <span>${product.price}</span> */}
+          
             {
                 newPrice ? <span>${product.price} New price : ${newPrice}</span> :
                     <span>${product.price}</span>

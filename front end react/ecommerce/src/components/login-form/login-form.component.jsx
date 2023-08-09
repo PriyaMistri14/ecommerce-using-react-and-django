@@ -5,7 +5,7 @@ import { Formik, Field, Form, ErrorMessage } from 'formik'
 
 import * as Yup from 'yup'
 
-import { axiosPOST, axiosIntance } from '../../axiosApi'
+import { axiosPOST, axiosIntance, axiosGET } from '../../axiosApi'
 
 
 
@@ -19,14 +19,31 @@ import { useEffect } from 'react'
 
 
 import { useLocation } from 'react-router-dom'
-import AdminPanel from '../admin-panel/admin-panel.component'
-import { jwtTokenAuthProvider } from 'ra-data-django-rest-framework'
+
 
 
 import { Link } from 'react-router-dom'
 
 
 import './login-form.styles.css'
+
+
+import GoogleLogin from 'react-google-login'
+
+import { gapi } from 'gapi-script';
+
+import { setCurrentUserAfterGoogleLogin } from '../../store/user/userSlice'
+
+
+
+const googleClientId= '371515150052-oglnu8uq79or7g660o79nvff0p79fsn6.apps.googleusercontent.com'
+const drfClientId = 'itZtZQNnZmbqMaeWsiSUBthfgFNfTt32L1dTbAn6'
+const drfClientSecret = 'uZvpvcD4SmKlCuJqT5HgoIsPDW64JCimvFtmb9V4HxKWFZsTtM4x8kzN2H5HxvshxHMlSEtGdzyPrH2WrYcl6kYbVubP4vMWS8vztqiJp5QK11xXlqv73aqQKSR00zhQ'
+
+
+
+
+
 
 
 
@@ -56,7 +73,23 @@ const Login = () => {
         console.log("Response in if after : ", res);
     }
 
+    // ....................
 
+
+
+    function AuthPage() {
+        useEffect(() => {
+            function start() {
+                gapi.client.init({
+                    clientId: '371515150052-oglnu8uq79or7g660o79nvff0p79fsn6.apps.googleusercontent.com',
+                    scope: 'email',
+                });
+            }
+
+            gapi.load('client:auth2', start);
+        }, []);
+    }
+    // ........................
 
     useEffect(() => {
         const token = localStorage.getItem('access_token')
@@ -71,7 +104,7 @@ const Login = () => {
 
     }, [])
 
-    console.log("ISADMIN AFTER   :    ", isAdmin);
+
 
 
 
@@ -172,10 +205,61 @@ const Login = () => {
 
 
 
+    const responseGoogle = async(response) => {
+      
+    
+       const payload2 =  {
+            token: response.accessToken,
+            backend: "google-oauth2",
+            grant_type: "convert_token",
+            client_id: drfClientId,
+            client_secret: drfClientSecret,
+          }
+
+
+        const result = await axiosPOST('auth2/convert-token', payload2)  
+
+        console.log("...........................result : ", result);
+
+        const r = await axiosGET('mysite/user/')
+        const allUsers = r.data
+        const filtered = allUsers.filter(user => user.first_name == response.profileObj.givenName && 
+            user.last_name == response.profileObj.familyName  && 
+            user.username == response.profileObj.email.split('@')[0] &&
+            user.email ==  response.profileObj.email)
+            
+        
+        const userId = filtered.length != 0 ?  filtered[0].id : 0
+
+        const payload ={
+            access : result.data.access_token,
+            refresh: result.data.refresh_token,
+            userId: userId,
+            userEmail: response.profileObj.email,
+            userFirstName : response.profileObj.givenName,
+            userLastName : response.profileObj.familyName,
+            username : response.profileObj.email.split('@')[0]
+
+
+        }
+
+        const res =  dispatch(setCurrentUserAfterGoogleLogin(payload))
+
+        axiosIntance.defaults.headers['Authorization'] = 'JWT ' + result.data.access_token
+        localStorage.setItem("access_token", result.data.access_token)
+        localStorage.setItem("refresh_token", result.data.refresh_token)
+
+
+
+        console.log("response google login :  ", response, "payload : ", payload, "response : ", res);
+        alert("Successfully login!!")
+        navigate("/categoryUser")
+    }
+
 
 
     return (
-        <div>
+       isLoading ? <p>Loading......</p> :  <div>
             <br />
 
 
@@ -204,6 +288,14 @@ const Login = () => {
             </Formik>
             <br />
             <br />
+
+            <GoogleLogin
+                clientId="371515150052-oglnu8uq79or7g660o79nvff0p79fsn6.apps.googleusercontent.com"
+                buttonText="LOGIN WITH GOOGLE"
+                onSuccess={responseGoogle}
+                onFailure={responseGoogle}
+            />
+
             <p>Forgot password ? <Link to='/forgotPassword'>Click here</Link></p>
             <p>Don't have an account ? <Link to='/register'>Register</Link></p>
 

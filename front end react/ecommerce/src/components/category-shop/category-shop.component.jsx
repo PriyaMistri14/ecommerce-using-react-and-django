@@ -40,6 +40,8 @@ const CategoryShop = () => {
 
     const isAdmin = useSelector(state => state.user.isAdmin)
 
+    const isLoading = useSelector(state => state.category.isLoading)
+
     const [currentPage, setCurrentPage] = useState(1)
     const [pageSize, setPageSize] = useState(5)
     const [search, setSearch] = useState("")
@@ -132,7 +134,7 @@ const CategoryShop = () => {
 
 
     return (
-        <div className='shop-container'>
+     isLoading ? <p>Loading.......</p> :  <div className='shop-container'>
 
             <div className='back-btn'> <Link to='/categoryUser'>&#10094;  BACK</Link></div>
 

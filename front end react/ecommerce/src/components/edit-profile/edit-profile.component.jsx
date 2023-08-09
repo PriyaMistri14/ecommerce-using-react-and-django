@@ -11,11 +11,17 @@ import { ErrorMessage, Form, Field, Formik } from 'formik'
 import * as Yup from 'yup'
 import { axiosPUT } from '../../axiosApi'
 
+import { updateCurrentUser } from '../../store/user/userSlice'
+
+import { useDispatch } from 'react-redux'
+
 
 
 const EditProfile = () => {
 
     const navigate = useNavigate()
+
+    const dispatch = useDispatch()
 
     const currentUser = useSelector(state => state.user.currentUser)
 
@@ -73,6 +79,18 @@ const EditProfile = () => {
             first_name: values.userFirstName,
             last_name: values.userLastName
         }
+
+        const currentUserPayload = {
+            refresh : currentUser ? currentUser.refresh : "",
+            userEmail : values.userEmail,
+            userFirstName : values.userFirstName,
+            userLastName : values,userLastName,
+            username : values.username,
+            userId : userId,
+            access : currentUser ? currentUser.access : ""
+        }
+
+        dispatch(updateCurrentUser(currentUserPayload))
 
         const res = await axiosPUT(`auth/updateProfile/${userId}`, payload)
         console.log("Update profile!! res : ", res.data);

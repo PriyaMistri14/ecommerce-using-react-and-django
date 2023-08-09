@@ -12,8 +12,7 @@ const ProductDetailEdit = (props) => {
             <TextInput disabled source='id' />
             <TextInput source='available_quantity' />
             <TextInput source='available_size' />
-            <TextInput source='available_color' />
-            <ReferenceInput source='product' reference='product' />
+            <TextInput source='available_color' />          
             
         </SimpleForm>
 

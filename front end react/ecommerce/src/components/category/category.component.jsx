@@ -29,7 +29,8 @@ const Category = () => {
 
     const currentUser = useSelector(state => state.user.currentUser)
     const isAdmin = useSelector(state => state.user.isAdmin)
-    console.log("Current user in category component : ", currentUser, " is Admin : ", isAdmin);
+    const isLoading = useSelector(state => state.category.isLoading)
+    console.log("Current user in category component : ", currentUser, " is Admin : ", isAdmin, "is loading : ", isLoading);
     
 
 
@@ -54,7 +55,7 @@ const Category = () => {
     console.log("CATEEEE :  ", categories);
 
     return (
-        <div>
+       isLoading ? <p>Loading..... </p> : <div>
             <h2>Category</h2>
             <div className='category-main-container'>
             {
