@@ -11,7 +11,7 @@ const ProductList = (props) => {
             <Datagrid>
 
                 <TextField source='id' />
-                <TextField source='category' />
+                {/* <TextField source='category' /> */}
                 <ReferenceField source="category" reference="category">
                     <TextField source="name" />
                 </ReferenceField>

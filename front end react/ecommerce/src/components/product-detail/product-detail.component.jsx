@@ -88,6 +88,7 @@ const ProductDetail = () => {
  
   const wholeProduct = useSelector(state => state.product.productDetail)
   const productDetail = wholeProduct === null ? [] : wholeProduct.product_details
+ const sortedProductDetail = productDetail.slice().sort((a,b) => a.id - b.id);
 
 
   // .............discount price count .............
@@ -157,7 +158,7 @@ const ProductDetail = () => {
 
   // .......................................................
 
-  console.log("Product details:UUUUUUU  ", productDetail, "whole product: ", wholeProduct);
+  console.log("Product details:UUUUUUU  ", productDetail,"Sorted : ", sortedProductDetail, "whole product: ", wholeProduct);
 
   const userId = currentUser === null ? "" : currentUser.userId
 
@@ -231,7 +232,7 @@ const ProductDetail = () => {
 
   return (
 
-   isLoading ? <p>Loading....</p> : <div>
+ <div>
       <div className='back-btn'> <Link to='/shop'>&#10094;  BACK</Link></div>
 
       <h2>Details</h2>
@@ -273,8 +274,8 @@ const ProductDetail = () => {
 
       <div className='product-detail-main-container'>
         {
-          productDetail && productDetail.length != 0 ?
-            productDetail.map(product => (
+          sortedProductDetail && sortedProductDetail.length != 0 ?
+          sortedProductDetail.map(product => (
               <div className='product-detail-container'>
 
                 <p>Available quantity : {product.available_quantity}</p>

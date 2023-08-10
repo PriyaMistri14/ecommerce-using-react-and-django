@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { List, Datagrid, TextField, EditButton, DeleteButton, ImageField, DateField, ReferenceManyField, NumberField } from 'react-admin'
+import { List, Datagrid, TextField, EditButton, DeleteButton, ReferenceField, DateField, ReferenceManyField, NumberField } from 'react-admin'
 
 
 
@@ -11,8 +11,13 @@ const OrderList = (props) => {
             <Datagrid>
 
                 <TextField source='id' />
-                <TextField source='user' />
+                {/* <TextField source='user' /> */}
+                <ReferenceField source="user" reference="user">
+                    <TextField source="username" />
+                </ReferenceField>
+            
                 <TextField source='product_detail'/>
+              
                 <TextField source='discount' />
                 <TextField source='coupon' />
                 <TextField source='quantity' />                

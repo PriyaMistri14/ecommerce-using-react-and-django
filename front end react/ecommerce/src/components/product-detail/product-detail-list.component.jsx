@@ -14,7 +14,7 @@ const ProductDetailList = (props) => {
                 <TextField source='available_quantity' />
                 <TextField source='available_size' />
                 <TextField source='available_color' />
-                <TextField source='product' />
+                {/* <TextField source='product' /> */}
                 <ReferenceField source="product" reference="product">
                     <TextField source="name" />
                 </ReferenceField>

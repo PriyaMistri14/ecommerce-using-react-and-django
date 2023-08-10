@@ -78,14 +78,14 @@ const AdminPanel = () => {
     
   return (
     <Admin dataProvider={dataProvider} authProvider={customAuthProvider} loginPage={Login}  >
-       <Resource name='category' list={CategoryList} create={CategoryCreate} edit={CategoryEdit} /> 
-       <Resource name='product' list={ProductList} create={ProductCreate} edit={ProductEdit} />
+       <Resource name='category' list={CategoryList} create={CategoryCreate} edit={CategoryEdit} recordRepresentation="name" /> 
+       <Resource name='product' list={ProductList} create={ProductCreate} edit={ProductEdit} recordRepresentation="name"/>
        <Resource name='productDetail' list={ProductDetailList} create={ProductDetailCreate} edit={ProductDetailEdit} />
        <Resource name='cartItem' list={CartItemList} create={CartItemCreate} edit={CartItemEdit} />
        <Resource name='review' list={ReviewList} create={ReviewCreate} edit={ReviewEdit} />
-       <Resource name='user' list={UserList} create={UserCreate} edit={UserEdit} />
+       <Resource name='user' list={UserList} create={UserCreate} edit={UserEdit} recordRepresentation="username"/>
        <Resource name='order' list={OrderList} create={OrderCreate} edit={OrderEdit} />
-       <Resource name='coupon' list={CouponList} create={CouponCreate} edit={CouponEdit} />
+       <Resource name='coupon' list={CouponList} create={CouponCreate} edit={CouponEdit} recordRepresentation="coupon_code" />
        <Resource name='discount' list={DiscountList} create={DiscountCreate} edit={DiscountEdit} />
 
 

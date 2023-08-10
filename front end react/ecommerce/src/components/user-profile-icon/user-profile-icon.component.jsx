@@ -6,16 +6,23 @@ import { useDispatch } from 'react-redux'
 import { setIsUserProfileCartOpen } from '../../store/user/userSlice'
 
 
+import { useSelector } from 'react-redux'
+
+
 
 
 const UserProfileIcon = () => {
 
     const dispatch = useDispatch()
 
+    const currentUser = useSelector(state => state.user.currentUser)
+
 
     const setUserProfileCart = () => {
 
-        dispatch(setIsUserProfileCartOpen())
+        if (currentUser != null) {
+            dispatch(setIsUserProfileCartOpen())
+        }
 
     }
 

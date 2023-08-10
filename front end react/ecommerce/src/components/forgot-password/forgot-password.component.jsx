@@ -11,11 +11,10 @@ import { ErrorMessage, Form, Field, Formik } from 'formik'
 import * as Yup from 'yup'
 import { axiosPUT } from '../../axiosApi'
 const OTP = Math.random().toString().substr(2, 6)
-console.log("OTP   :  ", OTP);
+console.log("-------------------OTP-------------------------   :  ", OTP);
 var counter = 20;
 
-var timer = setInterval(() => { 
-    console.log("called");
+var timer = setInterval(() => {     
 
     if (counter < 0) {
 
@@ -23,7 +22,7 @@ var timer = setInterval(() => {
         alert("Times Up! , OTP is resended!!")
         window.location.reload()
     } else {
-        console.log("called else", document.getElementById("counter"));
+       
         document.getElementById("counter").innerHTML = 'Time remaning : ' + counter
         counter--;
     }
@@ -63,7 +62,7 @@ const ForgotPassword = () => {
     }
 
     const validationSchema = Yup.object().shape({
-        OTP: Yup.number().required("This field is required!!").max(999999, "Only six digits!!").min(111111, "Only six digits!!").typeError("Enter Numbers only!!")
+        OTP: Yup.string().required("This field is required!!").max(6, "Only six digits!!").min(6, "Only six digits!!")
             .test('OTP', 'Invalid OTP!!', (value) => {
                 return value == OTP
             }),

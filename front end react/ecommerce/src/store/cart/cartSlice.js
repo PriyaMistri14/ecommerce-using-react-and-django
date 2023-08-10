@@ -179,7 +179,16 @@ export const clearCartItemAfterOrder = createAsyncThunk('/clearCartItemAfterOrde
 
 
 
+// export const getUserId = createAsyncThunk('/getUserId', async(userId)=>{
+  
+//    const res  = await axiosGET('mysite/cartItem')
+//    const allCartItems = res.data
+//    const filteredCartItems = allCartItems.filter(cartItem => cartItem.user == userId)
+//    const data = filteredCartItems && filteredCartItems.length != 0 ? filteredCartItems.map(item =>{
 
+//    }) : []
+
+// })
 
 
 
@@ -322,6 +331,11 @@ const cartSlice = createSlice({
 
 
             })
+
+
+            // .addCase(getUserId.fulfilled, (state, action)=>{
+            //     console.log("Called");
+            // } )
 
 
 

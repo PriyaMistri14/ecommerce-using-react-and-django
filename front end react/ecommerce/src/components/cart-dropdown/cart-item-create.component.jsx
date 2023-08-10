@@ -8,6 +8,7 @@ const CartItemCreate = (props) => {
     return (
         <Create title="Create a cart item " {...props} >
             <SimpleForm>
+                <ReferenceInput source='user' reference='user' />
                 <ReferenceInput source='product_detail' reference='productDetail' />
                 <TextInput source='quantity' />
 

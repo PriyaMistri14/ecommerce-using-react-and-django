@@ -60,7 +60,7 @@ const Login = () => {
 
     const currentUser = useSelector(state => state.user.currentUser)
     console.log("USERRRRR : ", currentUser);
-    const isLoading = useSelector(state => state.user.isLoading)
+    var isLoading = useSelector(state => state.user.isLoading)
     const error = useSelector(state => state.user.error)
     console.log("ERRORRRRRR : ", error);
 
@@ -206,6 +206,7 @@ const Login = () => {
 
 
     const responseGoogle = async(response) => {
+        isLoading = true
       
     
        const payload2 =  {
@@ -223,12 +224,12 @@ const Login = () => {
 
         const r = await axiosGET('mysite/user/')
         const allUsers = r.data
-        const filtered = allUsers.filter(user => user.first_name == response.profileObj.givenName && 
-            user.last_name == response.profileObj.familyName  && 
-            user.username == response.profileObj.email.split('@')[0] &&
+        const filtered = allUsers.filter(user => user.first_name == response.profileObj.givenName ||
+            user.last_name == response.profileObj.familyName  ||
+            user.username == response.profileObj.email.split('@')[0] ||
             user.email ==  response.profileObj.email)
             
-        
+        console.log("Alluser : ", allUsers , "filtered users : ", filtered, "Response : ", response.profileObj.givenName);
         const userId = filtered.length != 0 ?  filtered[0].id : 0
 
         const payload ={
@@ -252,6 +253,7 @@ const Login = () => {
 
 
         console.log("response google login :  ", response, "payload : ", payload, "response : ", res);
+       isLoading= false
         alert("Successfully login!!")
         navigate("/categoryUser")
     }
